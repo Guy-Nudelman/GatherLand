@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_welcome">
+
+    <fragment
+        android:id="@+id/navigation_welcome"
+        android:name="com.gather.land.fragments.auth.WelcomeFragment"
+        android:label="Welcome"
+        tools:layout="@layout/welcome_fragment" />
+
+
+    <fragment
+        android:id="@+id/navigation_register"
+        android:name="com.gather.land.fragments.auth.RegisterFragment"
+        android:label="Register"
+        tools:layout="@layout/register_fragment" />
+
+    <fragment
+        android:id="@+id/navigation_login"
+        android:name="com.gather.land.fragments.auth.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/login_fragment" />
+
+
+</navigation>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">GatherLand</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="txtHello">Hello</string>
+    <string name="Login">Button</string>
+</resources>
