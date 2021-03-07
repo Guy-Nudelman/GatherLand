@@ -16,7 +16,8 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        FirebaseAuth.getInstance().signOut();
+
+//        RepositoryApp.getInstance(this).signOut();
         showScreen();
     }
 
@@ -24,21 +25,18 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-
-                if(FirebaseAuth.getInstance().getCurrentUser()==null){
+                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
                     showActivity(AuthActivity.class);
-                }else{
+                } else {
                     showActivity(MainActivity.class);
                 }
-
-
 
             }
         }, 3000);
     }
 
     private void showActivity(Class<? extends AppCompatActivity> activity) {
-        Intent intent=new Intent(this,activity);
+        Intent intent = new Intent(this, activity);
         startActivity(intent);
         finish();
     }

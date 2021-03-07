@@ -5,19 +5,19 @@ import androidx.room.Entity;
 @Entity(tableName = "gameRequestsPost")
 public class GameRequestsPost extends Post {
 
-
     private long timeStampExpired;
-    private int usersMissing;
+    private int   usersMissing;
 
 
     public GameRequestsPost() {
     }
 
-    public GameRequestsPost(String gameTag, String userKey, long timeStampCreated, String title, long timeStampExpired, int usersMissing) {
-        super(gameTag, userKey, timeStampCreated, title);
+    public GameRequestsPost(String gameTag, long timeStampCreated, String title, long timeStampExpired, int usersMissing) {
+        super(gameTag, timeStampCreated, title);
         this.timeStampExpired = timeStampExpired;
         this.usersMissing = usersMissing;
     }
+
 
     public long getTimeStampExpired() {
         return timeStampExpired;

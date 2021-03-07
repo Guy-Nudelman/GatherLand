@@ -11,18 +11,24 @@ import com.gather.land.models.GameRequestsPost;
 import com.gather.land.models.StandardPost;
 
 
-@Database(entities = {StandardPost.class,GameRequestsPost.class,Comment.class},version = 1,exportSchema = false)
+@Database(entities = {StandardPost.class,GameRequestsPost.class,Comment.class},version =4,exportSchema = false)
 public abstract class RoomDatabaseSource extends RoomDatabase {
 
-    private static RoomDatabase roomDatabase;
+    private static RoomDatabaseSource roomDatabase;
     private static final String DATABASE_NAME = "GatherLandDatabase";
 
     public abstract ICommentDao getCommentDao();
+    public abstract IStandardPostDao getStandardPostDao();
+    public abstract IGameRequestPostDao geIGameRequestPostDao();
 
 
-    public static RoomDatabase getInstance(Context context) {
+    public static RoomDatabaseSource getInstance(Context context) {
         if (roomDatabase == null) {
-            roomDatabase = Room.databaseBuilder(context, RoomDatabaseSource.class, DATABASE_NAME).build();
+            roomDatabase = Room
+                    .databaseBuilder(context, RoomDatabaseSource.class, DATABASE_NAME)
+                    .allowMainThreadQueries()
+                    .fallbackToDestructiveMigration()
+                    .build();
         }
         return roomDatabase;
     }

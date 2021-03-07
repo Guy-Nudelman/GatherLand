@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.gather.land.R;
 import com.gather.land.activities.MainActivity;
 import com.gather.land.fragments.BaseFragment;
+import com.gather.land.reposetories.RepositoryApp;
 import com.gather.land.view_models.LoginViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -82,9 +83,7 @@ public class LoginFragment extends BaseFragment {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    //TODO : complete missing user details from server
-                    //TODO : store locally user details
-                    //TODO : download image profile (maybe)
+                    RepositoryApp.getInstance(getContext()).loadMyUser(email);
                     mListener.showActivity(MainActivity.class);
                 }else{
                     Toast.makeText(getContext(), "Wrong email or password", Toast.LENGTH_LONG).show();
@@ -98,7 +97,6 @@ public class LoginFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-        // TODO: Use the ViewModel
     }
 
 }

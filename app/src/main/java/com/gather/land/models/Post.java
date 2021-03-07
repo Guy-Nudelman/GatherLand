@@ -10,21 +10,36 @@ public abstract class Post {
     private String key;
     private String gameTag;
     private String userKey;
-    private long timeStampCreated;
+    private long   timeStampCreated;
     private String title;
+    private String userName;
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public Post() {
 
     }
 
+//    public Post(String gameTag, String userKey, long timeStampCreated, String title,String userName) {
+//        this.gameTag = gameTag;
+//        this.userName = userName;
+//        this.userKey = userKey;
+//        this.timeStampCreated = timeStampCreated;
+//        this.title = title;
+//    }
 
-    public Post(String gameTag, String userKey, long timeStampCreated, String title) {
+    public Post(String gameTag , long timeStampCreated, String title) {
         this.gameTag = gameTag;
-        this.userKey = userKey;
         this.timeStampCreated = timeStampCreated;
         this.title = title;
     }
+
 
     public String getKey() {
         return key;

@@ -17,15 +17,23 @@ public class Comment {
     private String postKey;
     private long timeStampCreated;
     private String body;
+    private String userName;
 
     public Comment() {
     }
 
-    public Comment(String userKey, String postKey, long timeStampCreated, String body) {
-        this.userKey = userKey;
+    public Comment(  String postKey, long timeStampCreated, String body) {
         this.postKey = postKey;
         this.timeStampCreated = timeStampCreated;
         this.body = body;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getUserKey() {
@@ -66,5 +74,17 @@ public class Comment {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "key='" + key + '\'' +
+                ", userKey='" + userKey + '\'' +
+                ", postKey='" + postKey + '\'' +
+                ", timeStampCreated=" + timeStampCreated +
+                ", body='" + body + '\'' +
+                ", userName='" + userName + '\'' +
+                '}';
     }
 }

@@ -10,10 +10,11 @@ public class StandardPost extends Post {
 
     }
 
-    public StandardPost(String gameTag, String userKey, long timeStampCreated, String title, String body) {
-        super(gameTag, userKey, timeStampCreated, title);
+    public StandardPost(String gameTag, long timeStampCreated, String title, String body) {
+        super(gameTag, timeStampCreated, title);
         this.body = body;
     }
+
 
     public String getBody() {
         return body;

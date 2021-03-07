@@ -2,6 +2,9 @@ package com.gather.land.fragments.auth;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,7 +21,11 @@ import android.widget.Toast;
 import com.gather.land.R;
 import com.gather.land.activities.MainActivity;
 import com.gather.land.fragments.BaseFragment;
+import com.gather.land.interfaces.UploadImageCallback;
+import com.gather.land.models.User;
+import com.gather.land.reposetories.RepositoryApp;
 import com.gather.land.view_models.RegisterViewModel;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -27,6 +34,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterFragment extends BaseFragment {
 
+    private static final int IMAGE_GALLERY_PROFILE_REQUEST =1 ;
     private RegisterViewModel mViewModel;
     private EditText edtName;
     private EditText edtLastName;
@@ -34,6 +42,7 @@ public class RegisterFragment extends BaseFragment {
     private EditText edtPassword;
     private Button btnUpload;
     private Button btnRegister;
+    private  User user;
 
     public static RegisterFragment newInstance() {
         return new RegisterFragment();
@@ -57,7 +66,7 @@ public class RegisterFragment extends BaseFragment {
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+            getImage();
             }
         });
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -68,11 +77,35 @@ public class RegisterFragment extends BaseFragment {
                 String password= edtPassword.getText().toString();
                 if(!isValid())
                     return;
+
+
                 createNewUser(email,password);
             }
         });
 
 
+
+    }
+
+    private Uri imageProfile;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        if (requestCode==IMAGE_GALLERY_PROFILE_REQUEST && resultCode== Activity.RESULT_OK){
+            imageProfile=data.getData();
+        }
+    }
+
+    private void getImage() {
+        ImagePicker.Companion.with(this)
+                .crop()                    //Crop image(Optional), Check Customization for more option
+                .compress(1024)            //Final image size will be less than 1 MB(Optional)
+                .maxResultSize(1080, 1080)    //Final image resolution will be less than 1080 x 1080(Optional)
+                .galleryOnly()
+                .start(IMAGE_GALLERY_PROFILE_REQUEST);
     }
 
     private boolean isValid() {
@@ -92,6 +125,8 @@ public class RegisterFragment extends BaseFragment {
             Toast.makeText(getContext(), "name is too short", Toast.LENGTH_SHORT).show();
             return false;
         }
+        user=new User(email,name,lastName,"empty" );
+
         return true;
     }
 
@@ -101,12 +136,14 @@ public class RegisterFragment extends BaseFragment {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    //TODO : store locally user details
-                    //TODO : insert to firebase database user details
-                    //TODO : show name activity
-                    mListener.showActivity(MainActivity.class);
+                    RepositoryApp.getInstance(getContext()).insertUser(user, imageProfile, new UploadImageCallback() {
+                        @Override
+                        public void onFinish(boolean isSuccess) {
+                            mListener.showActivity(MainActivity.class);
+                        }
+                    });
                 }else {
-                    Toast.makeText(getContext(), "Email already taken or is not a valid email", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -117,7 +154,6 @@ public class RegisterFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
-        // TODO: Use the ViewModel
     }
 
 }

@@ -1,10 +1,11 @@
 package com.gather.land.activities;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import com.gather.land.R;
-import com.gather.land.models.Post;
+import com.gather.land.models.Comment;
 import com.gather.land.models.StandardPost;
 import com.gather.land.models.User;
 import com.gather.land.reposetories.RepositoryApp;
@@ -18,6 +19,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,22 +37,29 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        User user=new User("te22s@gmail.com","moti","last","empty",System.currentTimeMillis());
-        RepositoryApp.getInstance(this).insertUser(user);
 
-
-        StandardPost standardPost=new StandardPost("ACTION",user.getEmail(),System.currentTimeMillis(),"Worms","Hello!!!");
-
+        StandardPost standardPost = new StandardPost("ACTION", System.currentTimeMillis(), "Worms", "Hello!!!");
 
         RepositoryApp.getInstance(this).insertPost(standardPost);
 
 
-        RepositoryApp.getInstance(this).getLiveDataStandartPost().observe(this, new Observer<ArrayList<StandardPost>>() {
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onChanged(ArrayList<StandardPost> standardPosts) {
-                Log.d("WOWOWOOWOW",standardPosts.toString());
+            public void run() {
+                RepositoryApp.getInstance(MainActivity.this).loadAllCommentsToPost(standardPost.getKey()).observe(MainActivity.this, new Observer<List<Comment>>() {
+                    @Override
+                    public void onChanged(List<Comment> comments) {
+                        Log.d("Deadasdasd",comments.toString());
+                    }
+                });
+
+                Comment comment = new Comment(standardPost.getKey(), System.currentTimeMillis(), "WOWOWOOWWOWOOW!");
+                RepositoryApp.getInstance(MainActivity.this).insertComment(comment);
             }
-        });
+        }, 700);
+
+
+
     }
 
 }
