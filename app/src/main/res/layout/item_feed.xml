@@ -10,25 +10,24 @@
         android:id="@+id/txtPostBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="173dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="173dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="18dp"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#515151"
+        app:layout_constraintStart_toEndOf="@+id/imageViewProfile"
         app:layout_constraintTop_toBottomOf="@+id/txtPostTitle" />
 
     <TextView
         android:id="@+id/txtPostTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="175dp"
-        android:layout_marginTop="128dp"
-        android:layout_marginEnd="175dp"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="65dp"
+        android:fontFamily="@font/aldrich"
         android:text="TextView"
+        android:textColor="#000000"
         android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewProfile"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -36,10 +35,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="297dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="57dp"
+        android:fontFamily="sans-serif-smallcaps"
         android:text="TextView"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,7 +50,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="42dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="44dp"
         app:layout_constraintEnd_toStartOf="@+id/txtPostBody"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,11 +61,9 @@
         android:id="@+id/txtPostUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="76dp"
-        android:layout_marginEnd="208dp"
+        android:layout_marginStart="13dp"
         android:text="TextView"
-        app:layout_constraintEnd_toStartOf="@+id/txtPostTime"
+        android:textColor="#161B57"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewProfile" />
 </androidx.constraintlayout.widget.ConstraintLayout>

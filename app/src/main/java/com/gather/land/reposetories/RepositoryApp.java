@@ -80,7 +80,7 @@ public class RepositoryApp {
 
     public void insertPost(Post post) {
         post.setUserKey(myUser.getImgUrl());
-        post.setUserName(myUser.getFirstName());
+        post.setUserName(myUser.getFirstName()+" "+myUser.getLastName());
         networkCore.insertPost(post);
     }
 

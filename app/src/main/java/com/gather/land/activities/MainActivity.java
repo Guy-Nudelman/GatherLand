@@ -38,23 +38,23 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
 
-        StandardPost standardPost = new StandardPost("ACTION", System.currentTimeMillis(), "Worms", "Hello!!!");
-
-        RepositoryApp.getInstance(this).insertPost(standardPost);
+//        StandardPost standardPost = new StandardPost("ACTION", System.currentTimeMillis(), "Worms", "Hello!!!");
+//
+//        RepositoryApp.getInstance(this).insertPost(standardPost);
 
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                RepositoryApp.getInstance(MainActivity.this).loadAllCommentsToPost(standardPost.getKey()).observe(MainActivity.this, new Observer<List<Comment>>() {
-                    @Override
-                    public void onChanged(List<Comment> comments) {
-                        Log.d("Deadasdasd",comments.toString());
-                    }
-                });
-
-                Comment comment = new Comment(standardPost.getKey(), System.currentTimeMillis(), "WOWOWOOWWOWOOW!");
-                RepositoryApp.getInstance(MainActivity.this).insertComment(comment);
+//                RepositoryApp.getInstance(MainActivity.this).loadAllCommentsToPost(standardPost.getKey()).observe(MainActivity.this, new Observer<List<Comment>>() {
+//                    @Override
+//                    public void onChanged(List<Comment> comments) {
+//                        Log.d("Deadasdasd",comments.toString());
+//                    }
+//                });
+//
+//                Comment comment = new Comment(standardPost.getKey(), System.currentTimeMillis(), "WOWOWOOWWOWOOW!");
+//                RepositoryApp.getInstance(MainActivity.this).insertComment(comment);
             }
         }, 700);
 

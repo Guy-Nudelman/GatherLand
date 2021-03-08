@@ -1,9 +1,15 @@
 package com.gather.land.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +35,8 @@ public class HomeFragment extends Fragment implements ICallBackFeedAdapter {
 
     private HomeViewModel homeViewModel;
     private RecyclerView recyclerViewFeed;
+    Button addPostBtn;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -51,6 +59,16 @@ public class HomeFragment extends Fragment implements ICallBackFeedAdapter {
                 initListPost(postList);
             }
         });
+        addPostBtn=view.findViewById(R.id.btnHomeAddPostBtn);
+        addPostBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PostDialogFragment dialogFragment =new PostDialogFragment();
+                Toast.makeText(getContext(),"Make sure to keep our rules. Keep it cleam!",Toast.LENGTH_SHORT).show();
+                dialogFragment.show(getFragmentManager(),"Post");
+            }
+
+        });
 
     }
 
@@ -62,5 +80,6 @@ public class HomeFragment extends Fragment implements ICallBackFeedAdapter {
     @Override
     public void onItemClickListener(StandardPost post) {
         Toast.makeText(getContext(), post.getTitle(), Toast.LENGTH_SHORT).show();
+        Log.d("tag",post.getTitle());
     }
 }
