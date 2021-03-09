@@ -8,14 +8,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.gather.land.R;
 import com.gather.land.view_models.NotificationsViewModel;
 
-public class NotificationsFragment extends Fragment {
+public class ProfileFragment extends BaseFragment {
 
     private NotificationsViewModel notificationsViewModel;
 
@@ -23,7 +22,7 @@ public class NotificationsFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         notificationsViewModel =
                 new ViewModelProvider(this).get(NotificationsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+        View root = inflater.inflate(R.layout.fragment_profile, container, false);
         final TextView textView = root.findViewById(R.id.text_notifications);
         notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -32,5 +31,11 @@ public class NotificationsFragment extends Fragment {
             }
         });
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
     }
 }

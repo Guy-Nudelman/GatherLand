@@ -2,27 +2,19 @@ package com.gather.land.activities;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 
 import com.gather.land.R;
-import com.gather.land.models.Comment;
-import com.gather.land.models.StandardPost;
-import com.gather.land.models.User;
-import com.gather.land.reposetories.RepositoryApp;
+import com.gather.land.interfaces.CallBackFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements CallBackFragment {
+    NavController navController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,11 +23,12 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_profile)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+          navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
 
 
 //        StandardPost standardPost = new StandardPost("ACTION", System.currentTimeMillis(), "Worms", "Hello!!!");
@@ -62,4 +55,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void showFragment(int fragmentId) {
+        navController.navigate(fragmentId);
+    }
+
+    @Override
+    public void showFragment(int fragmentId, Bundle bundle) {
+        navController.navigate(fragmentId,bundle);
+
+    }
+
+    @Override
+    public void showActivity(Class<? extends AppCompatActivity> activity) {
+
+    }
 }

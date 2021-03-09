@@ -10,6 +10,7 @@ import com.gather.land.enums.StorageFolder;
 import com.gather.land.interfaces.DownloadImageCallback;
 import com.gather.land.interfaces.UploadImageCallback;
 import com.gather.land.models.Comment;
+import com.gather.land.models.GameRequestsPost;
 import com.gather.land.models.Post;
 import com.gather.land.models.StandardPost;
 import com.gather.land.models.User;
@@ -78,13 +79,13 @@ public class RepositoryApp {
     }
 
 
-    public void insertPost(Post post) {
+    public void insertPost(Post post, Uri imagePostUri) {
         post.setUserKey(myUser.getImgUrl());
-        post.setUserName(myUser.getFirstName()+" "+myUser.getLastName());
-        networkCore.insertPost(post);
+        post.setUserName(myUser.getFirstName() + " " + myUser.getLastName());
+        networkCore.insertPost(post, imagePostUri);
     }
 
-    public LiveData<List<Comment>> loadAllCommentsToPost(String postKey) {
+    public LiveData<List<Comment>> getAllCommentsToPost(String postKey) {
         networkCore.startListenerCommentsPost(postKey, mListenerCommentsToPost);
         return databaseCore.getAllCommentsToPostLiveData(postKey);
     }
@@ -105,6 +106,11 @@ public class RepositoryApp {
 
     public void downloadImage(String imageName, StorageFolder folder, DownloadImageCallback callback) {
         networkCore.downloadImage(imageName, folder, callback);
+    }
+
+
+    public User getMyUser() {
+        return myUser;
     }
 
     public void loadMyUser(String email) {
@@ -129,9 +135,27 @@ public class RepositoryApp {
         return databaseCore.getAllPostFeedLiveData();
     }
 
+    public LiveData<List<GameRequestsPost>> getAllMyPostsGameRequest(String userEmail) {
+        return databaseCore.getAllMyPostsGameRequest(userEmail);
+    }
+
+    public LiveData<List<StandardPost>> getAllMyPosts() {
+        return databaseCore.getAllMyPosts(myUser.getImgUrl());
+    }
+
     public void signOut() {
         FirebaseAuth.getInstance().signOut();
         prefHelper.signOut();
         databaseCore.signOut();
+    }
+
+    public void deleteComment(Comment comment) {
+        databaseCore.deleteComment(comment);
+        networkCore.deleteComment(comment);
+    }
+
+    public void updateComment(Comment comment) {
+        databaseCore.updateComment(comment);
+        networkCore.updateComment(comment);
     }
 }

@@ -17,6 +17,7 @@ import com.gather.land.interfaces.DownloadImageCallback;
 import com.gather.land.interfaces.ICallBackFeedAdapter;
 import com.gather.land.models.StandardPost;
 import com.gather.land.reposetories.RepositoryApp;
+import com.gather.land.utilities.Utils;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -27,15 +28,13 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.AdapterFeedVie
     private Context context;
     private List<StandardPost> standardPosts;
     private ICallBackFeedAdapter callback;
-    private SimpleDateFormat simpleDateFormat;
-    private RepositoryApp repositoryApp;
+     private RepositoryApp repositoryApp;
 
     public AdapterFeed(List<StandardPost> standardPosts, Context context, ICallBackFeedAdapter callback) {
         this.standardPosts = standardPosts;
         this.callback = callback;
         this.context = context;
-        this.simpleDateFormat=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        this.repositoryApp=RepositoryApp.getInstance(context);
+        this.repositoryApp = RepositoryApp.getInstance(context);
     }
 
 
@@ -47,10 +46,10 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.AdapterFeedVie
 
     @Override
     public void onBindViewHolder(@NonNull AdapterFeedViewHolder holder, int position) {
-        StandardPost post= standardPosts.get(position);
+        StandardPost post = standardPosts.get(position);
         holder.txtTitle.setText(post.getTitle());
         holder.txtBody.setText(post.getBody());
-        holder.txtTime.setText(getTimeAsStringFormat(post.getTimeStampCreated()));
+        holder.txtTime.setText(Utils.getTimeAsStringFormat(post.getTimeStampCreated()));
         holder.txtUserName.setText(post.getUserName());
         repositoryApp.downloadImage(post.getUserKey(), StorageFolder.PROFILE, new DownloadImageCallback() {
             @Override
@@ -59,20 +58,24 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.AdapterFeedVie
             }
         });
 
+        repositoryApp.downloadImage(post.getKey(), StorageFolder.FEED, new DownloadImageCallback() {
+            @Override
+            public void onImageDownloaded(File file) {
+                if (file != null)
+                    Glide.with(context).load(file).into(holder.imageViewPost);
+            }
+        });
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (callback!=null){
+                if (callback != null) {
                     callback.onItemClickListener(post);
                 }
             }
         });
     }
 
-    private String getTimeAsStringFormat(long timeStampCreated) {
-        String timeFormat=simpleDateFormat.format(new Date(timeStampCreated));
-        return timeFormat;
-    }
 
     @Override
     public int getItemCount() {
@@ -80,6 +83,7 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.AdapterFeedVie
     }
 
     class AdapterFeedViewHolder extends RecyclerView.ViewHolder {
+        ImageView imageViewPost;
         TextView txtBody;
         TextView txtTitle;
         TextView txtTime;
@@ -93,6 +97,7 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.AdapterFeedVie
             txtTime = itemView.findViewById(R.id.txtPostTime);
             txtUserName = itemView.findViewById(R.id.txtPostUserName);
             profileImage = itemView.findViewById(R.id.imageViewProfile);
+            imageViewPost = itemView.findViewById(R.id.imgViewPost);
 
 
         }

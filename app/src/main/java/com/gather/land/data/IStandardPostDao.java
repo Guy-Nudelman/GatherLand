@@ -20,6 +20,8 @@ public interface IStandardPostDao {
     @Query("select * from standardPost where `gameTag`=:gameTag order by timeStampCreated desc")
     LiveData<List<StandardPost>> getAllPostsByGameTag(String gameTag);
 
+
+
     @Query("select * from standardPost order by timeStampCreated desc")
     LiveData<List<StandardPost>> getAllPostsList();
 

@@ -26,6 +26,11 @@ public class AuthActivity extends AppCompatActivity implements CallBackFragment 
     }
 
     @Override
+    public void showFragment(int fragmentId, Bundle bundle) {
+
+    }
+
+    @Override
     public void showActivity(Class<? extends AppCompatActivity> activity) {
 
         Intent intent = new Intent(this,activity);

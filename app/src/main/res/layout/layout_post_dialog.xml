@@ -28,4 +28,13 @@
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtPostTitle" />
+
+    <ImageView
+        android:id="@+id/imgPost"
+        android:layout_width="147dp"
+        android:layout_height="85dp"
+        android:layout_marginStart="19dp"
+        app:layout_constraintStart_toEndOf="@+id/edtPostTitle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
 </androidx.constraintlayout.widget.ConstraintLayout>

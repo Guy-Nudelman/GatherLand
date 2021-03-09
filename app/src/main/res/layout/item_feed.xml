@@ -47,8 +47,8 @@
 
     <ImageView
         android:id="@+id/imageViewProfile"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="67dp"
+        android:layout_height="53dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="44dp"
@@ -66,4 +66,16 @@
         android:textColor="#161B57"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewProfile" />
+
+    <ImageView
+        android:id="@+id/imgViewPost"
+        android:layout_width="111dp"
+        android:layout_height="91dp"
+        android:layout_marginStart="82dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtPostTitle"
+        app:layout_constraintTop_toBottomOf="@+id/txtPostTime"
+        tools:srcCompat="@tools:sample/avatars" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -93,11 +93,22 @@ public class NetworkCore {
         });
     }
 
-    public void insertPost(Post post) {
+    public void insertPost(Post post, Uri imagePostUri) {
+
         String key = mRef.child(FirebaseTable.FEED.name()).push().getKey();
         post.setKey(key);
         post.setUserKey(getEmailKey(post.getUserKey()));
-        mRef.child(FirebaseTable.FEED.name()).child(key).setValue(post);
+
+        if (imagePostUri != null) {
+            uploadImage(imagePostUri, key, StorageFolder.FEED, new UploadImageCallback() {
+                @Override
+                public void onFinish(boolean isSuccess) {
+                    mRef.child(FirebaseTable.FEED.name()).child(key).setValue(post);
+                }
+            });
+        } else {
+            mRef.child(FirebaseTable.FEED.name()).child(key).setValue(post);
+        }
     }
 
     private String getEmailKey(String email) {
@@ -114,8 +125,15 @@ public class NetworkCore {
         mRef.child(FirebaseTable.COMMENT.name()).child(comment.getPostKey()).child(commentKey).setValue(comment);
     }
 
-    public void startListenerCommentsPost(String postKey,ValueEventListener callback) {
+    public void startListenerCommentsPost(String postKey, ValueEventListener callback) {
         mRef.child(FirebaseTable.COMMENT.name()).child(postKey).addValueEventListener(callback);
+    }
 
+    public void deleteComment(Comment comment) {
+        mRef.child(FirebaseTable.COMMENT.name()).child(comment.getPostKey()).child(comment.getKey()).removeValue();
+    }
+
+    public void updateComment(Comment comment) {
+        mRef.child(FirebaseTable.COMMENT.name()).child(comment.getPostKey()).child(comment.getKey()).setValue(comment);
     }
 }

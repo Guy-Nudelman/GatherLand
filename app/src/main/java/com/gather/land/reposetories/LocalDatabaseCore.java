@@ -9,6 +9,7 @@ import com.gather.land.data.IGameRequestPostDao;
 import com.gather.land.data.IStandardPostDao;
 import com.gather.land.data.RoomDatabaseSource;
 import com.gather.land.models.Comment;
+import com.gather.land.models.GameRequestsPost;
 import com.gather.land.models.StandardPost;
 
 import java.util.ArrayList;
@@ -35,6 +36,12 @@ public class LocalDatabaseCore {
     public LiveData<List<StandardPost>> getAllPostFeedLiveData() {
         return standardPostDao.getAllPostsList();
     }
+    public LiveData<List<StandardPost>> getAllMyPosts(String userEmail) {
+        return standardPostDao.getAllPostsByUser(userEmail);
+    }
+    public LiveData<List<GameRequestsPost>> getAllMyPostsGameRequest(String userEmail) {
+        return gameRequestPostDao.getAllMyPosts(userEmail);
+    }
 
     public void signOut() {
         commentDao.deleteAll();
@@ -48,5 +55,13 @@ public class LocalDatabaseCore {
 
     public void insertNewCommentsLis(List<Comment> commentArrayList) {
         commentDao.insertNewComments(commentArrayList);
+    }
+
+    public void deleteComment(Comment comment) {
+        commentDao.deleteComment(comment.getKey());
+    }
+
+    public void updateComment(Comment comment) {
+        commentDao.updateComment(comment.getPostKey(),comment.getTimeStampCreated(),comment.getBody());
     }
 }

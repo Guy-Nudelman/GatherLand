@@ -31,7 +31,7 @@ import com.gather.land.view_models.HomeViewModel;
 
 import java.util.List;
 
-public class HomeFragment extends Fragment implements ICallBackFeedAdapter {
+public class HomeFragment extends BaseFragment implements ICallBackFeedAdapter {
 
     private HomeViewModel homeViewModel;
     private RecyclerView recyclerViewFeed;
@@ -47,10 +47,10 @@ public class HomeFragment extends Fragment implements ICallBackFeedAdapter {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerViewFeed=view.findViewById(R.id.recyclerViewFeed);
+        recyclerViewFeed = view.findViewById(R.id.recyclerViewFeed);
         recyclerViewFeed.setHasFixedSize(true);
-        recyclerViewFeed.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
-        recyclerViewFeed.addItemDecoration(new DividerItemDecoration(getContext(),RecyclerView.VERTICAL));
+        recyclerViewFeed.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        recyclerViewFeed.addItemDecoration(new DividerItemDecoration(getContext(), RecyclerView.VERTICAL));
 
 
         RepositoryApp.getInstance(getContext()).getAllPostFeedLiveData().observe(getViewLifecycleOwner(), new Observer<List<StandardPost>>() {
@@ -59,13 +59,13 @@ public class HomeFragment extends Fragment implements ICallBackFeedAdapter {
                 initListPost(postList);
             }
         });
-        addPostBtn=view.findViewById(R.id.btnHomeAddPostBtn);
+        addPostBtn = view.findViewById(R.id.btnHomeAddPostBtn);
         addPostBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PostDialogFragment dialogFragment =new PostDialogFragment();
-                Toast.makeText(getContext(),"Make sure to keep our rules. Keep it cleam!",Toast.LENGTH_SHORT).show();
-                dialogFragment.show(getFragmentManager(),"Post");
+                PostDialogFragment dialogFragment = new PostDialogFragment();
+                Toast.makeText(getContext(), "Make sure to keep our rules. Keep it cleam!", Toast.LENGTH_SHORT).show();
+                dialogFragment.show(getFragmentManager(), "Post");
             }
 
         });
@@ -73,13 +73,17 @@ public class HomeFragment extends Fragment implements ICallBackFeedAdapter {
     }
 
     private void initListPost(List<StandardPost> postList) {
-        AdapterFeed adapterFeed=new AdapterFeed(postList,getContext(),this);
+        AdapterFeed adapterFeed = new AdapterFeed(postList, getContext(), this);
         recyclerViewFeed.setAdapter(adapterFeed);
     }
 
     @Override
     public void onItemClickListener(StandardPost post) {
         Toast.makeText(getContext(), post.getTitle(), Toast.LENGTH_SHORT).show();
-        Log.d("tag",post.getTitle());
+        Log.d("tag", post.getTitle());
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(CommentFragment.POST_KEY, post);
+        mListener.showFragment(R.id.navigation_comments, bundle);
     }
 }

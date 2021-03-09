@@ -3,7 +3,9 @@ package com.gather.land.models;
 import androidx.annotation.NonNull;
 import androidx.room.PrimaryKey;
 
-public abstract class Post {
+import java.io.Serializable;
+
+public abstract class Post implements Serializable {
 
     @NonNull
     @PrimaryKey

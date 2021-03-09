@@ -1,5 +1,6 @@
 package com.gather.land.fragments.auth;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
@@ -27,6 +28,7 @@ import com.gather.land.reposetories.RepositoryApp;
 import com.gather.land.view_models.RegisterViewModel;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
@@ -34,7 +36,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterFragment extends BaseFragment {
 
-    private static final int IMAGE_GALLERY_PROFILE_REQUEST =1 ;
+    private static final int IMAGE_GALLERY_PROFILE_REQUEST = 1;
     private RegisterViewModel mViewModel;
     private EditText edtName;
     private EditText edtLastName;
@@ -42,7 +44,6 @@ public class RegisterFragment extends BaseFragment {
     private EditText edtPassword;
     private Button btnUpload;
     private Button btnRegister;
-    private  User user;
 
     public static RegisterFragment newInstance() {
         return new RegisterFragment();
@@ -57,16 +58,19 @@ public class RegisterFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        edtName=view.findViewById(R.id.edt_name);
-        edtLastName=view.findViewById(R.id.edt_lastName);
-        edtEmail=view.findViewById(R.id.edt_email);
-        edtPassword=view.findViewById(R.id.edt_password);
-        btnUpload=view.findViewById(R.id.btn_upload);
-        btnRegister=view.findViewById(R.id.btn_register);
+        edtName = view.findViewById(R.id.edt_name);
+        edtLastName = view.findViewById(R.id.edt_lastName);
+        edtEmail = view.findViewById(R.id.edt_email);
+        edtPassword = view.findViewById(R.id.edt_password);
+        btnUpload = view.findViewById(R.id.btn_upload);
+        btnRegister = view.findViewById(R.id.btn_register);
+
+
+
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            getImage();
+                getImage();
             }
         });
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -74,28 +78,39 @@ public class RegisterFragment extends BaseFragment {
             public void onClick(View v) {
 
                 String email = edtEmail.getText().toString();
-                String password= edtPassword.getText().toString();
-                if(!isValid())
-                    return;
+                String password = edtPassword.getText().toString();
+                String name = edtName.getText().toString();
+                String lastName = edtLastName.getText().toString();
+
+                RegisterViewModel.ERREOR_INPUT input = mViewModel.isValid(email, password, name, lastName);
+                switch (input) {
+                    case VALID:
+                        mViewModel.setUser(new User(email, name, lastName, "empty"));
+                        mViewModel.createNewUser(email, password);
+                        break;
+                    case NAME_SHORT:
+                        break;
+
+                    case PASS_SHORT:
+                        break;
+                    case MISS_FIELDS:
+                        break;
+                }
 
 
-                createNewUser(email,password);
             }
         });
 
 
-
     }
 
-    private Uri imageProfile;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
-        if (requestCode==IMAGE_GALLERY_PROFILE_REQUEST && resultCode== Activity.RESULT_OK){
-            imageProfile=data.getData();
+        if (requestCode == IMAGE_GALLERY_PROFILE_REQUEST && resultCode == Activity.RESULT_OK) {
+            mViewModel.setImageProfile(data.getData());
         }
     }
 
@@ -108,52 +123,23 @@ public class RegisterFragment extends BaseFragment {
                 .start(IMAGE_GALLERY_PROFILE_REQUEST);
     }
 
-    private boolean isValid() {
-        String email = edtEmail.getText().toString();
-        String password= edtPassword.getText().toString();
-        String name= edtName.getText().toString();
-        String lastName= edtLastName.getText().toString();
-
-
-        if (email.isEmpty()||password.isEmpty()||name.isEmpty()||lastName.isEmpty()){
-            Toast.makeText(getContext(), "Fill all fields", Toast.LENGTH_SHORT).show();
-            return false;
-        }else  if (password.length()<6){
-            Toast.makeText(getContext(), "Password is too short", Toast.LENGTH_SHORT).show();
-            return false;
-        }else if (name.length()<3 || lastName.length()<3){
-            Toast.makeText(getContext(), "name is too short", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        user=new User(email,name,lastName,"empty" );
-
-        return true;
-    }
-
-    private void createNewUser(String email, String password) {
-        FirebaseAuth auth=FirebaseAuth.getInstance();
-        auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    RepositoryApp.getInstance(getContext()).insertUser(user, imageProfile, new UploadImageCallback() {
-                        @Override
-                        public void onFinish(boolean isSuccess) {
-                            mListener.showActivity(MainActivity.class);
-                        }
-                    });
-                }else {
-                    Toast.makeText(getContext(),task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
+
+        mViewModel.getMutableLiveDataCreateUserResponse().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if (s.equals("VALID")) {
+                    mListener.showActivity(MainActivity.class);
+                }else {
+                    Toast.makeText(getContext(), "Fail", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
 }
