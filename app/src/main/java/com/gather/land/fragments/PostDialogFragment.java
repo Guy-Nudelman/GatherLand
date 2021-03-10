@@ -21,29 +21,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.core.content.FileProvider;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.gather.land.R;
 import com.gather.land.models.StandardPost;
 import com.gather.land.reposetories.RepositoryApp;
+import com.gather.land.view_models.HomeViewModel;
+import com.gather.land.view_models.PostDialogViewModel;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 
 import java.io.File;
 import java.io.IOException;
 
 public class PostDialogFragment extends AppCompatDialogFragment {
+    private PostDialogViewModel mViewModel;
     private EditText postTitle;
     private EditText postBody;
     private ImageView imgViewPost;
     private Uri imagePostUri;
     private static final int IMAGE_GALLERY_PROFILE_REQUEST = 1;
-    private static final int IMAGE_FROM_CAMERA_REQUEST = 2;
-    private static final int CAMERA_PERMISSION_REQUEST = 3;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
+        mViewModel = new ViewModelProvider(this).get(PostDialogViewModel.class);
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.layout_post_dialog, null);
@@ -53,33 +56,7 @@ public class PostDialogFragment extends AppCompatDialogFragment {
         imgViewPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog imgDialog = new AlertDialog.Builder(getContext()).create();
-                imgDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Camera", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        imgDialog.dismiss();
-//                        if (!hasPVameraermission)
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (getContext().checkSelfPermission(Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
-                                requestPermissions(new String[]{ Manifest.permission.CAMERA},CAMERA_PERMISSION_REQUEST);
-                            }else{
-                                askImageFromCamera();
-
-                            }
-                        }else {
-                            askImageFromCamera();
-                        }
-                    }
-                });
-                imgDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Gallery", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        imgDialog.dismiss();
-                        getImage();
-                    }
-                });
-                imgDialog.setTitle("Choose from:");
-                imgDialog.show();
+                getImage();
             }
         });
         dialog.setView(view).setTitle("New Post")
@@ -97,9 +74,9 @@ public class PostDialogFragment extends AppCompatDialogFragment {
                         String body;
                         title = postTitle.getText().toString();
                         body = postBody.getText().toString();
-                        if (postTitle.length() > 3 && postBody.length() > 10) {
+                        if (postTitle.length() > 3 && postBody.length() > 4) {
                             StandardPost standardPost = new StandardPost("ACTION", System.currentTimeMillis(), title, body);
-                            RepositoryApp.getInstance(getContext()).insertPost(standardPost,imagePostUri);
+                            mViewModel.insertPost(standardPost,imagePostUri);
                         } else {
                             Toast.makeText(getContext(), "We cant post such short posts", Toast.LENGTH_LONG).show();
                         }
@@ -107,62 +84,14 @@ public class PostDialogFragment extends AppCompatDialogFragment {
 
                     }
                 });
-
-
         return dialog.create();
-
     }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        boolean isPermissionAllowed=true;
-        if (requestCode==CAMERA_PERMISSION_REQUEST){
-            for (int i = 0; i < grantResults.length; i++) {
-                if (grantResults[i]!=PackageManager.PERMISSION_GRANTED){
-                    //TODO denied
-                    isPermissionAllowed=false;
-                }
-            }
-
-            if (isPermissionAllowed){
-                askImageFromCamera();
-            }
-        }
-    }
-
-    private void askImageFromCamera() {
-
-//        Intent intent=
-//                new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        File file = null;
-//        File storageDir=getContext().getExternalCacheDir();
-//        try {
-//            file=File.createTempFile(
-//                    "camera",
-//                    ".jpg",
-//                    storageDir
-//            );
-//        } catch (IOException exception) {
-//            exception.printStackTrace();
-//        }
-//        Uri photo= FileProvider.getUriForFile(getContext(),getContext().getPackageName()+".fileprovider".toLowerCase(),file);
-//        intent.putExtra(MediaStore.EXTRA_OUTPUT,photo);
-//        startActivityForResult(intent,IMAGE_FROM_CAMERA_REQUEST);
-
-    }
-    Uri photo;
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
 
         if (requestCode == IMAGE_GALLERY_PROFILE_REQUEST && resultCode == Activity.RESULT_OK) {
-            imagePostUri = data.getData();
-            Glide.with(getContext()).load(imagePostUri).into(imgViewPost);
-        } else if (requestCode == IMAGE_FROM_CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             imagePostUri = data.getData();
             Glide.with(getContext()).load(imagePostUri).into(imgViewPost);
         }

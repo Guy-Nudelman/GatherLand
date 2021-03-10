@@ -12,8 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="18dp"
+        android:layout_marginEnd="153dp"
         android:text="TextView"
         android:textColor="#515151"
+        app:layout_constraintEnd_toStartOf="@+id/imgViewPost"
         app:layout_constraintStart_toEndOf="@+id/imageViewProfile"
         app:layout_constraintTop_toBottomOf="@+id/txtPostTitle" />
 
@@ -73,7 +75,7 @@
         android:layout_height="91dp"
         android:layout_marginStart="82dp"
         android:layout_marginTop="11dp"
-        android:layout_marginEnd="3dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/txtPostTitle"
         app:layout_constraintTop_toBottomOf="@+id/txtPostTime"

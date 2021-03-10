@@ -16,6 +16,9 @@ public abstract class Post implements Serializable {
     private String title;
     private String userName;
 
+//    @Col
+//    private byte[] imageRAW;
+
     public String getUserName() {
         return userName;
     }

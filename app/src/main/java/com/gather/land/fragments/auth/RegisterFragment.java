@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.gather.land.R;
@@ -44,6 +45,7 @@ public class RegisterFragment extends BaseFragment {
     private EditText edtPassword;
     private Button btnUpload;
     private Button btnRegister;
+    private ProgressBar progressBarLoad;
 
     public static RegisterFragment newInstance() {
         return new RegisterFragment();
@@ -63,8 +65,8 @@ public class RegisterFragment extends BaseFragment {
         edtEmail = view.findViewById(R.id.edt_email);
         edtPassword = view.findViewById(R.id.edt_password);
         btnUpload = view.findViewById(R.id.btn_upload);
+        progressBarLoad = view.findViewById(R.id.progressBarLoad);
         btnRegister = view.findViewById(R.id.btn_register);
-
 
 
         btnUpload.setOnClickListener(new View.OnClickListener() {
@@ -85,15 +87,24 @@ public class RegisterFragment extends BaseFragment {
                 RegisterViewModel.ERREOR_INPUT input = mViewModel.isValid(email, password, name, lastName);
                 switch (input) {
                     case VALID:
+                        progressBarLoad.setVisibility(View.VISIBLE);
                         mViewModel.setUser(new User(email, name, lastName, "empty"));
                         mViewModel.createNewUser(email, password);
                         break;
                     case NAME_SHORT:
+                        progressBarLoad.setVisibility(View.GONE);
+                        Toast.makeText(getContext(), "Name is too short", Toast.LENGTH_SHORT).show();
+
                         break;
 
                     case PASS_SHORT:
+                        progressBarLoad.setVisibility(View.GONE);
+                        Toast.makeText(getContext(), "Password is too short", Toast.LENGTH_SHORT).show();
+
                         break;
                     case MISS_FIELDS:
+                        progressBarLoad.setVisibility(View.GONE);
+                        Toast.makeText(getContext(), "Fill all fields", Toast.LENGTH_SHORT).show();
                         break;
                 }
 
@@ -132,10 +143,11 @@ public class RegisterFragment extends BaseFragment {
         mViewModel.getMutableLiveDataCreateUserResponse().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
+                progressBarLoad.setVisibility(View.GONE);
                 if (s.equals("VALID")) {
                     mListener.showActivity(MainActivity.class);
-                }else {
-                    Toast.makeText(getContext(), "Fail", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), s.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
