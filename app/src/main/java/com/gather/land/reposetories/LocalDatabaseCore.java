@@ -39,6 +39,9 @@ public class LocalDatabaseCore {
     public LiveData<List<StandardPost>> getAllMyPosts(String userEmail) {
         return standardPostDao.getAllPostsByUser(userEmail);
     }
+    public LiveData<List<Comment>> getAllMyComments(String userEmail){
+        return commentDao.getAllCommentsByUser(userEmail);
+    }
     public LiveData<List<GameRequestsPost>> getAllMyPostsGameRequest(String userEmail) {
         return gameRequestPostDao.getAllMyPosts(userEmail);
     }
@@ -63,5 +66,13 @@ public class LocalDatabaseCore {
 
     public void updateComment(Comment comment) {
         commentDao.updateComment(comment.getPostKey(),comment.getTimeStampCreated(),comment.getBody());
+    }
+
+    public void deletePost(StandardPost post) {
+        standardPostDao.deleteAll();
+    }
+
+    public void deletePostComments(StandardPost post) {
+        commentDao.deleteAllCommentsPost(post.getKey());
     }
 }

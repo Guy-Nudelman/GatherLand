@@ -142,6 +142,9 @@ public class RepositoryApp {
     public LiveData<List<StandardPost>> getAllMyPosts() {
         return databaseCore.getAllMyPosts(myUser.getImgUrl());
     }
+    public LiveData<List<Comment>> getAllMyComments() {
+        return databaseCore.getAllMyComments(myUser.getImgUrl());
+    }
 
     public void signOut() {
         FirebaseAuth.getInstance().signOut();
@@ -157,5 +160,15 @@ public class RepositoryApp {
     public void updateComment(Comment comment) {
         databaseCore.updateComment(comment);
         networkCore.updateComment(comment);
+    }
+
+    public void deletePost(StandardPost post) {
+        databaseCore.deletePost(post);
+        networkCore.deletePost(post);
+        deleteAllCommentsPost(post);
+    }
+    public void deleteAllCommentsPost(StandardPost post){
+        databaseCore.deletePostComments(post);
+        networkCore.deletePostComments(post);
     }
 }

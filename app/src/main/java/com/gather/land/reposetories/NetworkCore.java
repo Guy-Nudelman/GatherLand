@@ -136,4 +136,12 @@ public class NetworkCore {
     public void updateComment(Comment comment) {
         mRef.child(FirebaseTable.COMMENT.name()).child(comment.getPostKey()).child(comment.getKey()).setValue(comment);
     }
+
+    public void deletePost(StandardPost post) {
+        mRef.child(FirebaseTable.FEED.name()).child(post.getKey()).removeValue();
+    }
+
+    public void deletePostComments(StandardPost post) {
+        mRef.child(FirebaseTable.COMMENT.name()).child(post.getKey()).removeValue();
+    }
 }

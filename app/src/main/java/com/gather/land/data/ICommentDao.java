@@ -8,6 +8,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.gather.land.models.Comment;
+import com.gather.land.models.StandardPost;
 
 import java.util.List;
 
@@ -16,6 +17,9 @@ public interface ICommentDao {
 
     @Query("select * from Comment where postKey= :postKey order by timeStampCreated desc")
     LiveData<List<Comment>> getAllCommentByPost(String postKey);
+
+    @Query("select * from Comment where `userKey`=:userKey order by timeStampCreated desc")
+    LiveData<List<Comment>> getAllCommentsByUser(String userKey);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertNewComment(Comment comment);

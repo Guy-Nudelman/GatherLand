@@ -40,4 +40,6 @@ public interface IStandardPostDao {
 
     @Query("DELETE from standardPost")
     void deleteAll();
+    @Query("DELETE from standardPost where 'key'=:postKey")
+    void deletePost(String postKey);
 }

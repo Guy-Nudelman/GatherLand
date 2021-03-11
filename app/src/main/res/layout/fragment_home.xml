@@ -9,7 +9,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewFeed"
+        android:id="@+id/recyclerViewProfileComments"
         android:layout_width="408dp"
         android:layout_height="268dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -83,5 +83,16 @@
         app:layout_constraintEnd_toStartOf="@+id/btnHomeAddPostBtn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgHomeLogo" />
+
+    <TextView
+        android:id="@+id/txtHomeUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="2dp"
+        android:text="TextView"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtHomeTitle2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

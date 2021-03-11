@@ -38,6 +38,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Adapte
     }
 
 
+
+
     @NonNull
     @Override
     public AdapterFeedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -95,7 +97,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Adapte
         public AdapterFeedViewHolder(@NonNull View itemView) {
             super(itemView);
             llContainerMyPost = itemView.findViewById(R.id.llContainerMyPost);
-            imgDelete = itemView.findViewById(R.id.imgDelete);
+            imgDelete = itemView.findViewById(R.id.imgDeletePost);
             imgEdit = itemView.findViewById(R.id.imgEdit);
             txtBody = itemView.findViewById(R.id.txtBody);
             txtTime = itemView.findViewById(R.id.txtTime);

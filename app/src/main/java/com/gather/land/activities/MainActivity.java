@@ -1,5 +1,6 @@
 package com.gather.land.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements CallBackFragment 
 
     @Override
     public void showActivity(Class<? extends AppCompatActivity> activity) {
-
+        Intent intent = new Intent(this,activity);
+        startActivity(intent);
+        finish();
     }
 }

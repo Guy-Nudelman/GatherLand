@@ -26,4 +26,11 @@
         android:layout_margin="10dp"
         android:src="@android:drawable/ic_input_add"
         android:id="@+id/imgAddComment"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>

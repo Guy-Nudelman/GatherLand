@@ -6,6 +6,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:id="@+id/llContainerMyPostSettings"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/imgComment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imgPostDelete"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            app:srcCompat="@android:drawable/ic_menu_delete" />
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/txtPostBody"
         android:layout_width="wrap_content"
@@ -80,4 +99,5 @@
         app:layout_constraintStart_toEndOf="@+id/txtPostTitle"
         app:layout_constraintTop_toBottomOf="@+id/txtPostTime"
         tools:srcCompat="@tools:sample/avatars" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

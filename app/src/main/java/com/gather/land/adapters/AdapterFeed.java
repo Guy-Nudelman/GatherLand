@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,21 +21,22 @@ import com.gather.land.reposetories.RepositoryApp;
 import com.gather.land.utilities.Utils;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.AdapterFeedViewHolder> {
     private Context context;
     private List<StandardPost> standardPosts;
     private ICallBackFeedAdapter callback;
-     private RepositoryApp repositoryApp;
+    private RepositoryApp repositoryApp;
+    private String myEmail;
 
     public AdapterFeed(List<StandardPost> standardPosts, Context context, ICallBackFeedAdapter callback) {
         this.standardPosts = standardPosts;
         this.callback = callback;
         this.context = context;
         this.repositoryApp = RepositoryApp.getInstance(context);
+        this.myEmail=repositoryApp.getMyUser().getImgUrl();
+
     }
 
 
@@ -51,6 +53,19 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.AdapterFeedVie
         holder.txtBody.setText(post.getBody());
         holder.txtTime.setText(Utils.getTimeAsStringFormat(post.getTimeStampCreated()));
         holder.txtUserName.setText(post.getUserName());
+        holder.llContainerMyPost.setVisibility(post.getUserKey().equals(myEmail)?View.GONE:View.GONE);
+
+//        if (post.getUserKey() == repositoryApp.getMyUser().getImgUrl()) {
+//           holder.btnDelete.setVisibility(View.VISIBLE);
+//        }
+//        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                repositoryApp.deletePost(post);
+//                callback.onRefresh();
+//            }
+//        });
         repositoryApp.downloadImage(post.getUserKey(), StorageFolder.PROFILE, new DownloadImageCallback() {
             @Override
             public void onImageDownloaded(File file) {
@@ -73,6 +88,7 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.AdapterFeedVie
                     callback.onItemClickListener(post);
                 }
             }
+
         });
     }
 
@@ -89,6 +105,8 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.AdapterFeedVie
         TextView txtTime;
         TextView txtUserName;
         ImageView profileImage;
+        ImageView btnDelete;
+        LinearLayout llContainerMyPost;
 
         public AdapterFeedViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -98,6 +116,10 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.AdapterFeedVie
             txtUserName = itemView.findViewById(R.id.txtPostUserName);
             profileImage = itemView.findViewById(R.id.imageViewProfile);
             imageViewPost = itemView.findViewById(R.id.imgViewPost);
+            llContainerMyPost = itemView.findViewById(R.id.llContainerMyPostSettings);
+
+            //      btnDelete = itemView.findViewById(R.id.imgDeletePost);
+//            btnDelete.setVisibility(View.GONE);
 
 
         }
