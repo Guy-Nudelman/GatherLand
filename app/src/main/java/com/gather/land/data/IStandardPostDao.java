@@ -29,6 +29,9 @@ public interface IStandardPostDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertNewStandardPost(List<StandardPost> postList);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertNewStandardPost(StandardPost post);
+
     @Query("UPDATE standardPost SET body = :body, timeStampCreated = :timeStampCreated, title = :title WHERE `key` = :postKey")
     void updatePost(
             String postKey,
@@ -40,6 +43,7 @@ public interface IStandardPostDao {
 
     @Query("DELETE from standardPost")
     void deleteAll();
-    @Query("DELETE from standardPost where 'key'=:postKey")
-    void deletePost(String postKey);
+
+    @Query("delete from standardPost where `key`=:postKey")
+    int deletePost(String postKey);
 }

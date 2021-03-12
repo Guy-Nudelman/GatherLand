@@ -1,6 +1,7 @@
 package com.gather.land.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ import com.gather.land.models.StandardPost;
 import com.gather.land.reposetories.RepositoryApp;
 import com.gather.land.view_models.HomeViewModel;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class HomeFragment extends BaseFragment implements ICallBackFeedAdapter {
@@ -31,12 +34,12 @@ public class HomeFragment extends BaseFragment implements ICallBackFeedAdapter {
     private HomeViewModel homeViewModel;
     private RecyclerView recyclerViewFeed;
     Button addPostBtn;
-    ProgressBar progressBar;
-    private TextView txtUserName;
     RepositoryApp repositoryApp;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        repositoryApp=RepositoryApp.getInstance(getContext());
+        repositoryApp = RepositoryApp.getInstance(getContext());
+
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         return root;
@@ -45,27 +48,21 @@ public class HomeFragment extends BaseFragment implements ICallBackFeedAdapter {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        progressBar = view.findViewById(R.id.progressBarHome);
-        txtUserName=view.findViewById(R.id.txtHomeUser);
-       // txtUserName.setText(homeViewModel.getUserFirstName());
-        progressBar.setVisibility(View.VISIBLE);
+
         recyclerViewFeed = view.findViewById(R.id.recyclerViewProfileComments);
         recyclerViewFeed.setHasFixedSize(true);
         recyclerViewFeed.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         recyclerViewFeed.addItemDecoration(new DividerItemDecoration(getContext(), RecyclerView.VERTICAL));
 
 
-
-        repositoryApp.getAllPostFeedLiveData().observe(getViewLifecycleOwner(), new Observer<List<StandardPost>>() {
+        repositoryApp.getLiveDataRefresh().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
-            public void onChanged(List<StandardPost> postList) {
-                initListPost(postList);
-                progressBar.setVisibility(View.GONE);
-
-
+            public void onChanged(Boolean aBoolean) {
+                loadRecyclerList();
             }
-
         });
+
+        loadRecyclerList();
         addPostBtn = view.findViewById(R.id.btnHomeAddPostBtn);
         addPostBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +74,19 @@ public class HomeFragment extends BaseFragment implements ICallBackFeedAdapter {
 
         });
     }
+
+    private void loadRecyclerList() {
+        repositoryApp.getAllPostFeedLiveData().observe(getViewLifecycleOwner(), new Observer<List<StandardPost>>() {
+            @Override
+            public void onChanged(List<StandardPost> postList) {
+                initListPost(postList);
+
+
+            }
+
+        });
+    }
+
     private void initListPost(List<StandardPost> postList) {
         AdapterFeed adapterFeed = new AdapterFeed(postList, getContext(), this);
         recyclerViewFeed.setAdapter(adapterFeed);

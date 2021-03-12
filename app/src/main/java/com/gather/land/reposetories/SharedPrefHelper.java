@@ -60,6 +60,8 @@ public class SharedPrefHelper {
 
 
     public User getUser(){
+        if (getEmailAddress()==null)
+            return null;
         User user=new User(getEmailAddress(),getFirstName(),getLastName(),getEmailFirebase());
         return user;
     }

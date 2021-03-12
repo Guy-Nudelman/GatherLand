@@ -19,13 +19,15 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginViewModel extends AndroidViewModel {
 
     MutableLiveData<String> mutableLiveDataCreateUserResponse = new MutableLiveData<>();
+    RepositoryApp repositoryApp;
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
+        repositoryApp = RepositoryApp.getInstance(application);
     }
 
     public LoginViewModel.ERREOR_INPUT isValid(String email, String password) {
-        if (email.isEmpty() || password.isEmpty() ) {
+        if (email.isEmpty() || password.isEmpty()) {
             return LoginViewModel.ERREOR_INPUT.MISS_FIELDS;
         } else if (password.length() < 6) {
             return LoginViewModel.ERREOR_INPUT.PASS_SHORT;
@@ -39,20 +41,24 @@ public class LoginViewModel extends AndroidViewModel {
     }
 
     public void login(String email, String password) {
-        FirebaseAuth auth=FirebaseAuth.getInstance();
-        auth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     RepositoryApp.getInstance(getApplication()).loadMyUser(email);
                     mutableLiveDataCreateUserResponse.postValue("VALID");
-                }else{
+                } else {
                     mutableLiveDataCreateUserResponse.postValue(task.getException().getMessage().toString());
 
                 }
             }
         });
 
+    }
+
+    public void listenerFeed() {
+        repositoryApp.listenerFeed();
     }
 
     public enum ERREOR_INPUT {

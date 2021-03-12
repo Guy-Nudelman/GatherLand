@@ -16,6 +16,7 @@ import com.gather.land.models.StandardPost;
 import com.gather.land.models.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,9 +38,9 @@ public class NetworkCore {
         mStorage = FirebaseStorage.getInstance().getReference();
     }
 
-    public void startListenerToFeed(ValueEventListener callback) {
+    public void startListenerToFeed(ChildEventListener callback) {
         //TODO listener from last timestamp updated
-        mRef.child(FirebaseTable.FEED.name()).addValueEventListener(callback);
+        mRef.child(FirebaseTable.FEED.name()).addChildEventListener(callback);
     }
 
 
@@ -125,8 +126,8 @@ public class NetworkCore {
         mRef.child(FirebaseTable.COMMENT.name()).child(comment.getPostKey()).child(commentKey).setValue(comment);
     }
 
-    public void startListenerCommentsPost(String postKey, ValueEventListener callback) {
-        mRef.child(FirebaseTable.COMMENT.name()).child(postKey).addValueEventListener(callback);
+    public void startListenerCommentsPost(String postKey, ChildEventListener callback) {
+        mRef.child(FirebaseTable.COMMENT.name()).child(postKey).addChildEventListener(callback);
     }
 
     public void deleteComment(Comment comment) {

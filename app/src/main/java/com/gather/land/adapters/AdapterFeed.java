@@ -17,6 +17,7 @@ import com.gather.land.enums.StorageFolder;
 import com.gather.land.interfaces.DownloadImageCallback;
 import com.gather.land.interfaces.ICallBackFeedAdapter;
 import com.gather.land.models.StandardPost;
+import com.gather.land.models.User;
 import com.gather.land.reposetories.RepositoryApp;
 import com.gather.land.utilities.Utils;
 
@@ -35,7 +36,9 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.AdapterFeedVie
         this.callback = callback;
         this.context = context;
         this.repositoryApp = RepositoryApp.getInstance(context);
-        this.myEmail=repositoryApp.getMyUser().getImgUrl();
+        User user = repositoryApp.getMyUser();
+        if (user != null)
+            this.myEmail = user.getImgUrl();
 
     }
 
@@ -53,7 +56,7 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.AdapterFeedVie
         holder.txtBody.setText(post.getBody());
         holder.txtTime.setText(Utils.getTimeAsStringFormat(post.getTimeStampCreated()));
         holder.txtUserName.setText(post.getUserName());
-        holder.llContainerMyPost.setVisibility(post.getUserKey().equals(myEmail)?View.GONE:View.GONE);
+        holder.llContainerMyPost.setVisibility(post.getUserKey().equals(myEmail) ? View.GONE : View.GONE);
 
 //        if (post.getUserKey() == repositoryApp.getMyUser().getImgUrl()) {
 //           holder.btnDelete.setVisibility(View.VISIBLE);

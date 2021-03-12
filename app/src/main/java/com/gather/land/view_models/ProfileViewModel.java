@@ -32,4 +32,8 @@ public class ProfileViewModel extends AndroidViewModel {
     public void updateComment(Comment comment) {
         repositoryApp.updateComment(comment);
     }
+
+    public String getUserName() {
+        return repositoryApp.getMyUser().getFirstName()+" "+repositoryApp.getMyUser().getLastName();
+    }
 }

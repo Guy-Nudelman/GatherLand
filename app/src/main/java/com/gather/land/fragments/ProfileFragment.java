@@ -3,6 +3,7 @@ package com.gather.land.fragments;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,9 @@ public class ProfileFragment extends BaseFragment  implements ICallBackFeedAdapt
         super.onViewCreated(view, savedInstanceState);
         txtUserName = view.findViewById(R.id.txtProfileName);
         btnLogOut = view.findViewById(R.id.btnLogOut);
+        txtUserName=view.findViewById(R.id.txtProfileName);
+        txtUserName.setText(mViewModel.getUserName());
+//        txtUserName.setVisibility(View.GONE);
         recyclerViewPosts = view.findViewById(R.id.recyclerViewProfilePosts);
         recyclerViewComments = view.findViewById(R.id.recyclerViewProfileComments);
         recyclerViewPosts.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
@@ -60,8 +64,7 @@ public class ProfileFragment extends BaseFragment  implements ICallBackFeedAdapt
         RepositoryApp.getInstance(getContext()).getAllMyPosts().observe(getViewLifecycleOwner(), new Observer<List<StandardPost>>() {
             @Override
             public void onChanged(List<StandardPost> postList) {
-                initListPost(postList);
-
+                    initListPost(postList);
 
             }
         });
@@ -78,7 +81,14 @@ public class ProfileFragment extends BaseFragment  implements ICallBackFeedAdapt
             @Override
             public void onClick(View v) {
                 mViewModel.logOut();
-                mListener.showActivity(SplashActivity.class);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        mListener.showActivity(SplashActivity.class);
+                    }
+                },2000);
 
             }
         });

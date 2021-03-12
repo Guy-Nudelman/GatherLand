@@ -2,9 +2,13 @@ package com.gather.land.reposetories;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Handler;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.gather.land.enums.StorageFolder;
 import com.gather.land.interfaces.DownloadImageCallback;
@@ -15,11 +19,11 @@ import com.gather.land.models.Post;
 import com.gather.land.models.StandardPost;
 import com.gather.land.models.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RepositoryApp {
@@ -31,15 +35,36 @@ public class RepositoryApp {
     private User myUser;
 
 
-    private final ValueEventListener mCallbackNewPostFeed = new ValueEventListener() {
+    private final ChildEventListener mCallbackNewPostFeed = new ChildEventListener() {
         @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            ArrayList<StandardPost> standardPosts = new ArrayList<>();
-            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                StandardPost post = snapshot.getValue(StandardPost.class);
-                standardPosts.add(post);
-            }
-            databaseCore.insertStandardPost(standardPosts);
+        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            StandardPost post = dataSnapshot.getValue(StandardPost.class);
+            databaseCore.insertNewStandardPost(post);
+        }
+
+        @Override
+        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//            StandardPost post = dataSnapshot.getValue(StandardPost.class);
+//            databaseCore.insertNewStandardPost(post);
+        }
+
+        @Override
+        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            Log.d("WOOOWW", "remove");
+            StandardPost post = dataSnapshot.getValue(StandardPost.class);
+            databaseCore.deletePost(post);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    onRefreshList();
+                }
+            },1000);
+        }
+
+        @Override
+        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
         }
 
         @Override
@@ -47,15 +72,30 @@ public class RepositoryApp {
 
         }
     };
-    private ValueEventListener mListenerCommentsToPost = new ValueEventListener() {
+    private ChildEventListener mListenerCommentsToPost = new ChildEventListener() {
         @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            ArrayList<Comment> commentArrayList = new ArrayList<>();
-            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                Comment comment = snapshot.getValue(Comment.class);
-                commentArrayList.add(comment);
-            }
-            databaseCore.insertNewCommentsLis(commentArrayList);
+        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            Comment comment = dataSnapshot.getValue(Comment.class);
+            databaseCore.insertNewComments(comment);
+        }
+
+        @Override
+        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            Comment comment = dataSnapshot.getValue(Comment.class);
+            databaseCore.insertNewComments(comment);
+//            onRefreshList();
+        }
+
+        @Override
+        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            Comment comment = dataSnapshot.getValue(Comment.class);
+            databaseCore.deleteComment(comment);
+            onRefreshList();
+        }
+
+        @Override
+        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
         }
 
         @Override
@@ -63,6 +103,15 @@ public class RepositoryApp {
 
         }
     };
+
+
+//            ArrayList<Comment> commentArrayList = new ArrayList<>();
+//            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//        Comment comment = snapshot.getValue(Comment.class);
+//        commentArrayList.add(comment);
+//    }
+//            databaseCore.insertNewCommentsLis(commentArrayList);
+
 
     public static RepositoryApp getInstance(Context context) {
         if (instance == null)
@@ -74,8 +123,25 @@ public class RepositoryApp {
         databaseCore = new LocalDatabaseCore(context);
         networkCore = new NetworkCore();
         prefHelper = SharedPrefHelper.getInstance(context);
-        networkCore.startListenerToFeed(mCallbackNewPostFeed);
         myUser = prefHelper.getUser();
+        if (myUser != null)
+            listenerFeed();
+    }
+
+
+
+    private MutableLiveData<Boolean> liveDataRefresh=new MutableLiveData<>();
+
+    public MutableLiveData<Boolean> getLiveDataRefresh() {
+        return liveDataRefresh;
+    }
+
+    public void onRefreshList() {
+        liveDataRefresh.postValue(true);
+    }
+
+    public void listenerFeed() {
+        networkCore.startListenerToFeed(mCallbackNewPostFeed);
     }
 
 
@@ -142,6 +208,7 @@ public class RepositoryApp {
     public LiveData<List<StandardPost>> getAllMyPosts() {
         return databaseCore.getAllMyPosts(myUser.getImgUrl());
     }
+
     public LiveData<List<Comment>> getAllMyComments() {
         return databaseCore.getAllMyComments(myUser.getImgUrl());
     }
@@ -150,6 +217,7 @@ public class RepositoryApp {
         FirebaseAuth.getInstance().signOut();
         prefHelper.signOut();
         databaseCore.signOut();
+        instance = null;
     }
 
     public void deleteComment(Comment comment) {
@@ -167,7 +235,8 @@ public class RepositoryApp {
         networkCore.deletePost(post);
         deleteAllCommentsPost(post);
     }
-    public void deleteAllCommentsPost(StandardPost post){
+
+    public void deleteAllCommentsPost(StandardPost post) {
         databaseCore.deletePostComments(post);
         networkCore.deletePostComments(post);
     }

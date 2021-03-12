@@ -1,6 +1,7 @@
 package com.gather.land.reposetories;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -33,6 +34,10 @@ public class LocalDatabaseCore {
         standardPostDao.insertNewStandardPost(standardPosts);
     }
 
+    public void insertNewStandardPost(StandardPost standardPosts) {
+        standardPostDao.insertNewStandardPost(standardPosts);
+    }
+
     public LiveData<List<StandardPost>> getAllPostFeedLiveData() {
         return standardPostDao.getAllPostsList();
     }
@@ -59,6 +64,9 @@ public class LocalDatabaseCore {
     public void insertNewCommentsLis(List<Comment> commentArrayList) {
         commentDao.insertNewComments(commentArrayList);
     }
+    public void insertNewComments(Comment comment) {
+        commentDao.insertNewComment(comment);
+    }
 
     public void deleteComment(Comment comment) {
         commentDao.deleteComment(comment.getKey());
@@ -69,7 +77,8 @@ public class LocalDatabaseCore {
     }
 
     public void deletePost(StandardPost post) {
-        standardPostDao.deleteAll();
+      int row=  standardPostDao.deletePost(post.getKey());
+        Log.d("WOOOWW",row+"");
     }
 
     public void deletePostComments(StandardPost post) {

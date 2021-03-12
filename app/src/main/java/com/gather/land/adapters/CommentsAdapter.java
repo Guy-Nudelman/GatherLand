@@ -17,6 +17,7 @@ import com.gather.land.enums.StorageFolder;
 import com.gather.land.interfaces.DownloadImageCallback;
 import com.gather.land.interfaces.ICallBackCommentAdapter;
 import com.gather.land.models.Comment;
+import com.gather.land.models.User;
 import com.gather.land.reposetories.RepositoryApp;
 import com.gather.land.utilities.Utils;
 
@@ -34,7 +35,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Adapte
         this.context = context;
         this.callBackCommentAdapter= callBackCommentAdapter;
         this.repositoryApp = RepositoryApp.getInstance(context);
-        this.myEmail=repositoryApp.getMyUser().getImgUrl();
+
+        User user = repositoryApp.getMyUser();
+        if (user != null)
+            this.myEmail = user.getImgUrl();
     }
 
 

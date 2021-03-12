@@ -13,17 +13,14 @@ import com.gather.land.reposetories.RepositoryApp;
 public class HomeViewModel extends AndroidViewModel {
 
     private MutableLiveData<String> mText;
-
+    RepositoryApp repositoryApp;
     public HomeViewModel(@NonNull Application application) {
         super(application);
+        repositoryApp=RepositoryApp.getInstance(getApplication());
     }
 
-
-    public LiveData<String> getText() {
-        return mText;
+    public String getUserName() {
+        return repositoryApp.getMyUser().getFirstName();
     }
-//    public String getUserFirstName(){
-//        return RepositoryApp.getInstance(getApplication()).getMyUser().getFirstName().toString();
-//
-//    }
+
 }

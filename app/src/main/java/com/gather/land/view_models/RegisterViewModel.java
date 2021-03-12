@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class RegisterViewModel extends AndroidViewModel {
     private Uri imageProfile;
     private User user;
+    private RepositoryApp repositoryApp;
     private static final int IMAGE_GALLERY_PROFILE_REQUEST = 1;
 
 
@@ -46,6 +47,7 @@ public class RegisterViewModel extends AndroidViewModel {
 
     public RegisterViewModel(@NonNull Application application) {
         super(application);
+        repositoryApp = RepositoryApp.getInstance(application);
     }
 
     MutableLiveData<String> mutableLiveDataCreateUserResponse = new MutableLiveData<>();
@@ -87,6 +89,9 @@ public class RegisterViewModel extends AndroidViewModel {
 
     }
 
+    public void listenerFeed() {
+        repositoryApp.listenerFeed();
+    }
 
 
     public static enum ERREOR_INPUT {

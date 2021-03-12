@@ -16,88 +16,83 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/imgPostDelete"
-            android:layout_width="50dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            app:srcCompat="@android:drawable/ic_menu_delete" />
-
     </LinearLayout>
 
     <TextView
         android:id="@+id/txtPostBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="153dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="136dp"
         android:text="TextView"
         android:textColor="#515151"
-        app:layout_constraintEnd_toStartOf="@+id/imgViewPost"
-        app:layout_constraintStart_toEndOf="@+id/imageViewProfile"
+        app:layout_constraintEnd_toStartOf="@+id/imgPostDelete"
         app:layout_constraintTop_toBottomOf="@+id/txtPostTitle" />
 
     <TextView
         android:id="@+id/txtPostTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="42dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="95dp"
         android:fontFamily="@font/aldrich"
         android:text="TextView"
         android:textColor="#000000"
         android:textSize="22sp"
-        app:layout_constraintStart_toEndOf="@+id/imageViewProfile"
+        app:layout_constraintEnd_toStartOf="@+id/txtPostTime"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtPostTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="297dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="57dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:fontFamily="sans-serif-smallcaps"
         android:text="TextView"
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageViewProfile"
         android:layout_width="67dp"
         android:layout_height="53dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="44dp"
-        app:layout_constraintEnd_toStartOf="@+id/txtPostBody"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPostTime"
+        android:layout_marginEnd="72dp"
+        app:layout_constraintEnd_toStartOf="@+id/txtPostTitle"
+        app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/txtPostUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="13dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="79dp"
         android:text="TextView"
         android:textColor="#161B57"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/txtPostBody"
         app:layout_constraintTop_toBottomOf="@+id/imageViewProfile" />
 
     <ImageView
         android:id="@+id/imgViewPost"
         android:layout_width="111dp"
         android:layout_height="91dp"
-        android:layout_marginStart="82dp"
-        android:layout_marginTop="11dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="31dp"
+        android:layout_marginEnd="157dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/txtPostTitle"
-        app:layout_constraintTop_toBottomOf="@+id/txtPostTime"
+        app:layout_constraintTop_toBottomOf="@+id/txtPostBody"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imgPostDelete"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="2dp"
+        android:layout_weight="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtPostTime"
+        app:srcCompat="@android:drawable/ic_menu_delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

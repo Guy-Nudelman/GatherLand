@@ -7,12 +7,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,9 +19,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.gather.land.R;
@@ -38,13 +32,12 @@ import com.gather.land.models.StandardPost;
 import com.gather.land.reposetories.RepositoryApp;
 import com.gather.land.utilities.Utils;
 import com.gather.land.view_models.CommentViewModel;
-import com.gather.land.view_models.HomeViewModel;
 
 import java.io.File;
 import java.util.List;
 
 
-public class CommentFragment extends Fragment implements ICallBackCommentAdapter {
+public class CommentFragment extends BaseFragment implements ICallBackCommentAdapter {
 
     private RecyclerView recyclerView;
     public final static String POST_KEY = "POST_KEY";
@@ -58,10 +51,9 @@ public class CommentFragment extends Fragment implements ICallBackCommentAdapter
     ImageView imageViewPost;
     RepositoryApp repositoryApp;
     LinearLayout llContainerMyPost;
-    ProgressBar progressBar;
     ImageView imgDelete;
+
     private CommentViewModel commentViewModel;
-    NavController navController;
 
 
     public CommentFragment() {
@@ -72,7 +64,6 @@ public class CommentFragment extends Fragment implements ICallBackCommentAdapter
                              Bundle savedInstanceState) {
         commentViewModel = new ViewModelProvider(this).get(CommentViewModel.class);
         repositoryApp = RepositoryApp.getInstance(getContext());
-        navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
 
 
         // Inflate the layout for this fragment
@@ -85,17 +76,15 @@ public class CommentFragment extends Fragment implements ICallBackCommentAdapter
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), RecyclerView.VERTICAL));
-        View viewPost = view.findViewById(R.id.my_post);
-        txtBody = viewPost.findViewById(R.id.txtPostBody);
-        txtTitle = viewPost.findViewById(R.id.txtPostTitle);
-        txtTime = viewPost.findViewById(R.id.txtPostTime);
-        txtUserName = viewPost.findViewById(R.id.txtPostUserName);
-        profileImage = viewPost.findViewById(R.id.imageViewProfile);
-        imageViewPost = viewPost.findViewById(R.id.imgViewPost);
-        imgAddComment = view.findViewById(R.id.imgAddComment);
-        progressBar = view.findViewById(R.id.progressBar);
+        txtBody = view.findViewById(R.id.txtCommentBodyPage);
+        txtTitle = view.findViewById(R.id.txtCommentTitlePage);
+        txtTime = view.findViewById(R.id.txtCommentTimePage);
+        txtUserName = view.findViewById(R.id.txtCommentUserNamePage);
+        profileImage = view.findViewById(R.id.imgCommentProfilePage);
+        imageViewPost = view.findViewById(R.id.imgCommentPostPage);
+        imgAddComment = view.findViewById(R.id.imgCommentAddPage);
         llContainerMyPost = view.findViewById(R.id.llContainerMyPostSettings);
-        imgDelete = view.findViewById(R.id.imgPostDelete);
+        imgDelete = view.findViewById(R.id.btnCommentDeletePage);
 
 
 
@@ -117,6 +106,7 @@ public class CommentFragment extends Fragment implements ICallBackCommentAdapter
     }
     private void showNewCommentDialog(Comment comment) {
         EditText editText = new EditText(getContext());
+
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
         dialog.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
             @Override
@@ -135,7 +125,7 @@ public class CommentFragment extends Fragment implements ICallBackCommentAdapter
                 }
             }
         });
-        dialog.setTitle("New comment");
+        dialog.setTitle("Say something!");
         dialog.setView(editText);
         if (comment != null)
             editText.setText(comment.getBody());
@@ -147,7 +137,6 @@ public class CommentFragment extends Fragment implements ICallBackCommentAdapter
             @Override
             public void onChanged(List<Comment> commentList) {
                 loadRecyclerList(commentList);
-                progressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -162,17 +151,22 @@ public class CommentFragment extends Fragment implements ICallBackCommentAdapter
         txtBody.setText(post.getBody());
         txtTime.setText(Utils.getTimeAsStringFormat(post.getTimeStampCreated()));
         txtUserName.setText(post.getUserName());
-        llContainerMyPost.setVisibility(post.getUserKey().equals(repositoryApp.getMyUser().getImgUrl())?View.VISIBLE:View.GONE);
+        imgDelete.setVisibility(post.getUserKey().equals(repositoryApp.getMyUser().getImgUrl())?View.VISIBLE:View.GONE);
         imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 commentViewModel.deletePost(post);
-                navController.navigate(R.id.navigation_home);
+                mListener.showFragment(R.id.navigation_home);
 
             }
         });
 
-
+        repositoryApp.getLiveDataRefresh().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                onRefresh();
+            }
+        });
 
         repositoryApp.downloadImage(post.getUserKey(), StorageFolder.PROFILE, new DownloadImageCallback() {
             @Override

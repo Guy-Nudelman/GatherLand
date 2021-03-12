@@ -12,7 +12,7 @@ public abstract class Post implements Serializable {
     private String key;
     private String gameTag;
     private String userKey;
-    private long   timeStampCreated;
+    private long timeStampCreated;
     private String title;
     private String userName;
 
@@ -39,7 +39,7 @@ public abstract class Post implements Serializable {
 //        this.title = title;
 //    }
 
-    public Post(String gameTag , long timeStampCreated, String title) {
+    public Post(String gameTag, long timeStampCreated, String title) {
         this.gameTag = gameTag;
         this.timeStampCreated = timeStampCreated;
         this.title = title;

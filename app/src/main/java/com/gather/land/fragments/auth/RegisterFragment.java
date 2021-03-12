@@ -145,6 +145,7 @@ public class RegisterFragment extends BaseFragment {
             public void onChanged(String s) {
                 progressBarLoad.setVisibility(View.GONE);
                 if (s.equals("VALID")) {
+                    mViewModel.listenerFeed();
                     mListener.showActivity(MainActivity.class);
                 } else {
                     Toast.makeText(getContext(), s.toString(), Toast.LENGTH_SHORT).show();
