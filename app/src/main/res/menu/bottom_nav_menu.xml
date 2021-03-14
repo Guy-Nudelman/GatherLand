@@ -16,6 +16,9 @@
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_profile"
         android:title="My Profile" />
+    <item
+        android:id="@+id/navigation_about_us"
+        android:title="About Us" />
 
 
 </menu>

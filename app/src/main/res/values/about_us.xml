@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello %1$s!</string>
+    <string name="app"><big>In Our App</big></string>
+    <string name="data">
+        You have posted %2$d! posts, that have total submitted %2$d comments until today!
+    </string>
+    <string name="purpose" formatted="true">
+       <i>This application is for gamers who want to find there favourite content of different
+           gaming communities in one single place.</i>
+          Share posts in different communities exclusive to the private community you tagged your posts
+    </string>
+
+</resources>
