@@ -5,6 +5,12 @@
     <string name="title_notifications">Notifications</string>
     <string name="txtHello">Hello</string>
     <string name="Login">Button</string>
+    <string name="General"> This is a community app for gamers..You can interact with each other and share moments in their respective games. People will be able to join many communities in the app depends on the games they like. **This app was created as part of a project for our Android Application Course conducted by Dr. Eliav Menache.**
+
+**Pictures that are presented here are sample pictures for the demonstration of the app, we do not have a vested interest on them.**</string>
+    <string name="Plans"> At the moment, our users are mainly focusing on games like pokemon go and Destiny, therefore we have only a main community page as our home page.We plan to expand our audience and so to support different variety of games. Moreover, Posts likes and Account Management are also features that we will implement soon. Feel free to contact us for any future ideas or feedback. Thanks.   </string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

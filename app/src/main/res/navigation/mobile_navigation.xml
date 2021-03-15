@@ -27,4 +27,10 @@
         android:name="com.gather.land.fragments.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.gather.land.fragments.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
+
 </navigation>

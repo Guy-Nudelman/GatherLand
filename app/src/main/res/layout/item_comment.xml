@@ -6,72 +6,87 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imgComment"
-        android:layout_width="65dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="34dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginEnd="312dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
-
     <TextView
         android:id="@+id/txtName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="37dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="7dp"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgComment" />
+        app:layout_constraintTop_toBottomOf="@+id/cardViewComment" />
 
     <TextView
         android:id="@+id/txtTime"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="216dp"
-        android:layout_marginTop="19dp"
-        android:layout_marginEnd="38dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="16dp"
         android:text="TextView"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imgComment"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtBody"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="39dp"
-        android:layout_marginTop="51dp"
+        android:layout_width="198dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="37dp"
         android:text="TextView"
-        app:layout_constraintStart_toEndOf="@+id/imgComment"
+        app:layout_constraintEnd_toStartOf="@+id/llContainerMyPost"
+        app:layout_constraintStart_toEndOf="@+id/txtName"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/llContainerMyPost"
-        android:layout_width="30dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toStartOf="@+id/imgComment"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_marginStart="37dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="5dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtBody"
+        app:layout_constraintTop_toBottomOf="@+id/txtTime">
 
         <ImageView
             android:id="@+id/imgDeletePost"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:background="@drawable/custom_button"
             app:srcCompat="@android:drawable/ic_menu_delete" />
 
         <ImageView
             android:id="@+id/imgEdit"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_marginLeft="3dp"
+            android:background="@drawable/custom_button_primary"
             app:srcCompat="@android:drawable/ic_menu_edit" />
     </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewComment"
+        android:layout_width="50dp"
+
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="26dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/txtBody"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imgComment"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            tools:srcCompat="@tools:sample/avatars" />
+    </androidx.cardview.widget.CardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

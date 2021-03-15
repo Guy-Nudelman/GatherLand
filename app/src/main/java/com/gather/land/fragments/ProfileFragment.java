@@ -94,6 +94,7 @@ public class ProfileFragment extends BaseFragment  implements ICallBackFeedAdapt
         });
 
 
+
     }
     private void initListPost(List<StandardPost> postList) {
         AdapterFeed adapterFeed = new AdapterFeed(postList, getContext(), this);
@@ -122,6 +123,7 @@ public class ProfileFragment extends BaseFragment  implements ICallBackFeedAdapt
         });
         recyclerViewComments.setAdapter(commentsAdapter);
     }
+
 
     @Override
     public void onItemClickListener(StandardPost post) {

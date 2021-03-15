@@ -22,6 +22,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.InputStream;
+
 public class RegisterViewModel extends AndroidViewModel {
     private Uri imageProfile;
     private User user;
@@ -42,6 +44,11 @@ public class RegisterViewModel extends AndroidViewModel {
     }
 
     public Uri getImageProfile() {
+        if (imageProfile==null)
+        {
+            Uri uri = Uri.parse("android.resource://"+getApplication().getPackageName()+"/drawable/avatar");
+            this.imageProfile=uri;
+        }
         return imageProfile;
     }
 

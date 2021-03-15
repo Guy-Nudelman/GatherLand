@@ -45,8 +45,7 @@ public class RepositoryApp {
 
         @Override
         public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//            StandardPost post = dataSnapshot.getValue(StandardPost.class);
-//            databaseCore.insertNewStandardPost(post);
+
         }
 
         @Override
@@ -104,13 +103,6 @@ public class RepositoryApp {
         }
     };
 
-
-//            ArrayList<Comment> commentArrayList = new ArrayList<>();
-//            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//        Comment comment = snapshot.getValue(Comment.class);
-//        commentArrayList.add(comment);
-//    }
-//            databaseCore.insertNewCommentsLis(commentArrayList);
 
 
     public static RepositoryApp getInstance(Context context) {
