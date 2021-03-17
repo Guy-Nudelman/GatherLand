@@ -13,12 +13,6 @@ public class ProfileViewModel extends AndroidViewModel {
         super(application);
         repositoryApp=RepositoryApp.getInstance(getApplication());
     }
-//    public String getUserFirstName(){
-//        return repositoryApp.getMyUser().getFirstName().toString();
-//    }
-//    public String getUserLastName(){
-//        return repositoryApp.getMyUser().getLastName().toString();
-//    }
 
     public void logOut() {
         repositoryApp.signOut();

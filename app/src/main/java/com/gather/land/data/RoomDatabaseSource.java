@@ -11,7 +11,7 @@ import com.gather.land.models.GameRequestsPost;
 import com.gather.land.models.StandardPost;
 
 
-@Database(entities = {StandardPost.class,GameRequestsPost.class,Comment.class},version =4,exportSchema = false)
+@Database(entities = {StandardPost.class,GameRequestsPost.class,Comment.class},version =8,exportSchema = false)
 public abstract class RoomDatabaseSource extends RoomDatabase {
 
     private static RoomDatabaseSource roomDatabase;

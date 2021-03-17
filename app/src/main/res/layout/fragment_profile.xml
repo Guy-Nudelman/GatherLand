@@ -8,13 +8,14 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewProfilePosts"
-        android:layout_width="292dp"
-        android:layout_height="119dp"
-        android:layout_marginStart="48dp"
+        android:layout_width="match_parent"
+        android:layout_height="504dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="46dp"
-        android:layout_marginEnd="71dp"
-        android:layout_marginBottom="102dp"
-        app:layout_constraintBottom_toTopOf="@+id/txtProfileComments"
+
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="39dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnLogOut"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtProfilePosts" />
@@ -23,14 +24,9 @@
         android:id="@+id/recyclerViewProfileComments"
         android:layout_width="300dp"
         android:layout_height="116dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="14dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnLogOut"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtProfileComments" />
+        android:visibility="gone"
+        tools:layout_editor_absoluteX="393dp"
+        tools:layout_editor_absoluteY="381dp" />
 
     <TextView
         android:id="@+id/txtProfileName"
@@ -50,15 +46,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="35dp"
+        android:layout_marginBottom="34dp"
         android:text="Log Out"
         app:backgroundTint="#F44336"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewProfileComments" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewProfilePosts" />
 
     <TextView
         android:id="@+id/txtProfilePosts"
@@ -85,6 +81,7 @@
         android:text="Comments"
         android:textColor="#000000"
         android:textSize="20sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/recyclerViewProfileComments"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

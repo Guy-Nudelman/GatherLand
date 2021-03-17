@@ -46,4 +46,8 @@ public interface IStandardPostDao {
 
     @Query("delete from standardPost where `key`=:postKey")
     int deletePost(String postKey);
+
+    @Query("select * from standardPost where `key`=:key ")
+    StandardPost getPost(String key);
+
 }

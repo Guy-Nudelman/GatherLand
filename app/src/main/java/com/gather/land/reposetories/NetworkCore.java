@@ -74,6 +74,12 @@ public class NetworkCore {
                 if (callback != null)
                     callback.onImageDownloaded(finalFile);
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (callback != null)
+                    callback.onImageDownloaded(null);
+            }
         });
 
     }

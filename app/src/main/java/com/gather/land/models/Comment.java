@@ -2,8 +2,11 @@ package com.gather.land.models;
 
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import com.google.firebase.database.Exclude;
 
 @Entity(tableName ="Comment" )
 public class Comment {
@@ -18,6 +21,21 @@ public class Comment {
     private long timeStampCreated;
     private String body;
     private String userName;
+
+
+    @Exclude
+    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
+    private byte[] imageProfileRAW;
+
+    @Exclude
+    public byte[] getImageProfileRAW() {
+        return imageProfileRAW;
+    }
+
+    @Exclude
+    public void setImageProfileRAW(byte[] imageProfileRAW) {
+        this.imageProfileRAW = imageProfileRAW;
+    }
 
     public Comment() {
     }
@@ -87,4 +105,5 @@ public class Comment {
                 ", userName='" + userName + '\'' +
                 '}';
     }
+
 }

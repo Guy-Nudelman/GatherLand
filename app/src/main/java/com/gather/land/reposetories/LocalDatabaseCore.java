@@ -84,4 +84,14 @@ public class LocalDatabaseCore {
     public void deletePostComments(StandardPost post) {
         commentDao.deleteAllCommentsPost(post.getKey());
     }
+
+
+
+    public boolean isCommentExist(String key) {
+        return commentDao.getCommand(key)!=null;
+    }
+
+    public boolean isPostExist(String key) {
+        return standardPostDao.getPost(key)!=null;
+    }
 }

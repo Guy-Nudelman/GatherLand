@@ -1,6 +1,8 @@
 package com.gather.land.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import com.gather.land.interfaces.ICallBackFeedAdapter;
 import com.gather.land.models.StandardPost;
 import com.gather.land.models.User;
 import com.gather.land.reposetories.RepositoryApp;
+import com.gather.land.utilities.ConverterImage;
 import com.gather.land.utilities.Utils;
 
 import java.io.File;
@@ -58,32 +61,39 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.AdapterFeedVie
         holder.txtUserName.setText(post.getUserName());
         holder.llContainerMyPost.setVisibility(post.getUserKey().equals(myEmail) ? View.GONE : View.GONE);
 
-//        if (post.getUserKey() == repositoryApp.getMyUser().getImgUrl()) {
-//           holder.btnDelete.setVisibility(View.VISIBLE);
-//        }
-//        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                repositoryApp.deletePost(post);
-//                callback.onRefresh();
-//            }
-//        });
-        repositoryApp.downloadImage(post.getUserKey(), StorageFolder.PROFILE, new DownloadImageCallback() {
-            @Override
-            public void onImageDownloaded(File file) {
-                Glide.with(context).load(file).into(holder.profileImage);
-            }
-        });
 
-        repositoryApp.downloadImage(post.getKey(), StorageFolder.FEED, new DownloadImageCallback() {
-            @Override
-            public void onImageDownloaded(File file) {
-                if (file != null)
-                    Glide.with(context).load(file).into(holder.imageViewPost);
-            }
-        });
 
+        if (post.getImageProfileRAW() != null) {
+            Bitmap bitmap = ConverterImage.getBitmapImage(post.getImageProfileRAW());
+            Glide.with(context).load(bitmap).into(holder.profileImage);
+
+        } else {
+            holder.profileImage.setImageBitmap(null);
+            repositoryApp.downloadImage(post.getUserKey(), StorageFolder.PROFILE, new DownloadImageCallback() {
+                @Override
+                public void onImageDownloaded(File file) {
+                    Glide.with(context).load(file).into(holder.profileImage);
+                }
+            });
+        }
+
+        if (post.getImagePostRAW() != null) {
+            Bitmap bitmap = ConverterImage.getBitmapImage(post.getImagePostRAW());
+            Glide.with(context).load(bitmap).into(holder.imageViewPost);
+        } else {
+            holder.imageViewPost.setImageBitmap(null);
+            repositoryApp.downloadImage(post.getKey(), StorageFolder.FEED, new DownloadImageCallback() {
+                @Override
+                public void onImageDownloaded(File file) {
+                    if (file != null) {
+                        Glide.with(context).load(file).into(holder.imageViewPost);
+
+                    }else {
+                        Glide.with(context).clear(holder.imageViewPost);
+                    }
+                }
+            });
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

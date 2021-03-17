@@ -42,4 +42,7 @@ public interface ICommentDao {
 
     @Query("delete from Comment")
     void deleteAll();
+
+    @Query("select * from Comment where `key`= :key")
+    Comment getCommand(String key);
 }

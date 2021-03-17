@@ -3,6 +3,7 @@ package com.gather.land.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,7 @@ import com.gather.land.interfaces.ICallBackCommentAdapter;
 import com.gather.land.models.Comment;
 import com.gather.land.models.StandardPost;
 import com.gather.land.reposetories.RepositoryApp;
+import com.gather.land.utilities.ConverterImage;
 import com.gather.land.utilities.Utils;
 import com.gather.land.view_models.CommentViewModel;
 
@@ -59,6 +61,7 @@ public class CommentFragment extends BaseFragment implements ICallBackCommentAda
     public CommentFragment() {
         // Required empty public constructor
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,6 +72,7 @@ public class CommentFragment extends BaseFragment implements ICallBackCommentAda
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_comment, container, false);
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -87,8 +91,6 @@ public class CommentFragment extends BaseFragment implements ICallBackCommentAda
         imgDelete = view.findViewById(R.id.btnCommentDeletePage);
 
 
-
-
         imgAddComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,10 +102,11 @@ public class CommentFragment extends BaseFragment implements ICallBackCommentAda
         Bundle bundle = getArguments();
         if (bundle != null) {
             post = (StandardPost) bundle.getSerializable(POST_KEY);
-            loadMyPost(post,getActivity());
+            loadMyPost(post, getActivity());
             loadAllComments(post);
         }
     }
+
     private void showNewCommentDialog(Comment comment) {
         EditText editText = new EditText(getContext());
 
@@ -146,12 +149,12 @@ public class CommentFragment extends BaseFragment implements ICallBackCommentAda
         recyclerView.setAdapter(commentsAdapter);
     }
 
-    private void loadMyPost(StandardPost post,Activity activity) {
+    private void loadMyPost(StandardPost post, Activity activity) {
         txtTitle.setText(post.getTitle());
         txtBody.setText(post.getBody());
         txtTime.setText(Utils.getTimeAsStringFormat(post.getTimeStampCreated()));
         txtUserName.setText(post.getUserName());
-        imgDelete.setVisibility(post.getUserKey().equals(repositoryApp.getMyUser().getImgUrl())?View.VISIBLE:View.GONE);
+        imgDelete.setVisibility(post.getUserKey().equals(repositoryApp.getMyUser().getImgUrl()) ? View.VISIBLE : View.GONE);
         imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,35 +171,52 @@ public class CommentFragment extends BaseFragment implements ICallBackCommentAda
             }
         });
 
-        repositoryApp.downloadImage(post.getUserKey(), StorageFolder.PROFILE, new DownloadImageCallback() {
-            @Override
-            public void onImageDownloaded(File file) {
-                Activity activity = getActivity();
-                if (file != null && activity != null && !activity.isDestroyed())
-                    Glide.with(activity).load(file).into(profileImage);
-            }
-        });
-        repositoryApp.downloadImage(post.getKey(), StorageFolder.FEED, new DownloadImageCallback() {
-            @Override
-            public void onImageDownloaded(File file) {
-                Activity activity = getActivity();
-                if (file != null && activity != null && !activity.isDestroyed())
-                    Glide.with(activity).load(file).into(imageViewPost);
-            }
-        });
+        if (post.getImageProfileRAW() != null) {
+            Bitmap bitmap = ConverterImage.getBitmapImage(post.getImageProfileRAW());
+            Glide.with(activity).load(bitmap).into(profileImage);
+        } else {
+            repositoryApp.downloadImage(post.getUserKey(), StorageFolder.PROFILE, new DownloadImageCallback() {
+                @Override
+                public void onImageDownloaded(File file) {
+                    Activity activity = getActivity();
+                    if (file != null && activity != null && !activity.isDestroyed()) {
+                        Glide.with(activity).load(file).into(profileImage);
+                        commentViewModel.insertImageProfileToDB(file, post);
+                    }
+                }
+            });
+        }
 
+
+        if (post.getImagePostRAW() != null) {
+            Bitmap bitmap = ConverterImage.getBitmapImage(post.getImagePostRAW());
+            Glide.with(activity).load(bitmap).into(imageViewPost);
+        } else {
+            repositoryApp.downloadImage(post.getKey(), StorageFolder.FEED, new DownloadImageCallback() {
+                @Override
+                public void onImageDownloaded(File file) {
+                    Activity activity = getActivity();
+                    if (file != null && activity != null && !activity.isDestroyed()) {
+                        Glide.with(activity).load(file).into(imageViewPost);
+                        commentViewModel.insertImagePostToDB(file, post);
+                    } else if (file == null && activity != null && !activity.isDestroyed())
+                        imageViewPost.setVisibility(View.GONE);
+
+                }
+            });
+        }
     }
+
     @Override
     public void onRefresh() {
         loadAllComments(post);
     }
+
     @Override
     public void onShowEditCommentDialog(Comment comment) {
         //TODO show dialog
         showNewCommentDialog(comment);
     }
-
-
 
 
 }

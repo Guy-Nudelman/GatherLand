@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,15 +9,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewComments"
-        android:layout_width="409dp"
-        android:layout_height="144dp"
-        android:layout_marginTop="51dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/imgCommentAddPage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtCommentBodyPage" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/imgCommentAddPage"
+        android:layout_below="@+id/textView2" />
 
     <ImageView
         android:id="@+id/imgCommentAddPage"
@@ -29,97 +24,88 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/custom_button_light"
-        android:src="@android:drawable/ic_input_add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:src="@android:drawable/ic_input_add" />
 
     <TextView
         android:id="@+id/txtCommentTitlePage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
         android:fontFamily="sans-serif-medium"
         android:text="TextView"
+        android:layout_marginLeft="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/txtCommentTimePage"
         android:textColor="#000000"
-        android:textSize="40dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgCommentPostPage" />
+        android:textSize="40dp" />
 
     <TextView
         android:id="@+id/txtCommentBodyPage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="15dp"
+        android:layout_below="@+id/txtCommentTitlePage"
+        android:layout_centerHorizontal="true"
         android:fontFamily="serif"
         android:text="TextView"
         android:textColor="#0F1A55"
-        android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtCommentTitlePage" />
+        android:textSize="17sp" />
 
     <ImageView
+        android:layout_below="@+id/rlContainerProfile"
         android:id="@+id/imgCommentPostPage"
-        android:layout_width="0dp"
+        android:layout_width="300dp"
         android:layout_height="300dp"
-        android:layout_marginTop="104dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_centerHorizontal="true"
         tools:src="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/txtCommentTimePage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgCommentPostPage" />
+        android:layout_marginTop="2dp"
+        android:layout_below="@+id/imgCommentPostPage"
+        android:layout_alignParentRight="true"
+        android:text="12_03_2021_12_25_35" />
 
     <ImageButton
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
         android:id="@+id/btnCommentDeletePage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:src="@drawable/ic_baseline_delete_forever_24"
-        app:backgroundTint="#F44336"
-        app:layout_constraintBottom_toTopOf="@+id/imgCommentPostPage"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.285" />
+        app:backgroundTint="#F44336" />
 
-    <ImageView
-        android:id="@+id/imgCommentProfilePage"
-        android:layout_width="59dp"
-        android:layout_height="49dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
+    <RelativeLayout
+        android:id="@+id/rlContainerProfile"
+        android:layout_width="70dp"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true">
+
+        <ImageView
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:id="@+id/imgCommentProfilePage"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/txtCommentUserNamePage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+    </RelativeLayout>
 
     <TextView
-        android:id="@+id/txtCommentUserNamePage"
-        android:layout_width="81dp"
-        android:layout_height="36dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="8dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgCommentProfilePage" />
-
-    <TextView
+        android:layout_below="@+id/txtCommentBodyPage"
+        android:id="@+id/textView2"
         style="@style/Divider"
         android:layout_marginTop="2dp"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtCommentBodyPage" />
+        android:textColor="@color/black" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

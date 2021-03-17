@@ -57,10 +57,10 @@ public class ProfileFragment extends BaseFragment  implements ICallBackFeedAdapt
 //        txtUserName.setVisibility(View.GONE);
         recyclerViewPosts = view.findViewById(R.id.recyclerViewProfilePosts);
         recyclerViewComments = view.findViewById(R.id.recyclerViewProfileComments);
-        recyclerViewPosts.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        recyclerViewComments.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        recyclerViewPosts.addItemDecoration(new DividerItemDecoration(getContext(), RecyclerView.HORIZONTAL));
-        recyclerViewComments.addItemDecoration(new DividerItemDecoration(getContext(), RecyclerView.HORIZONTAL));
+        recyclerViewPosts.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        recyclerViewComments.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        recyclerViewPosts.addItemDecoration(new DividerItemDecoration(getContext(), RecyclerView.VERTICAL));
+        recyclerViewComments.addItemDecoration(new DividerItemDecoration(getContext(), RecyclerView.VERTICAL));
         RepositoryApp.getInstance(getContext()).getAllMyPosts().observe(getViewLifecycleOwner(), new Observer<List<StandardPost>>() {
             @Override
             public void onChanged(List<StandardPost> postList) {
@@ -99,14 +99,6 @@ public class ProfileFragment extends BaseFragment  implements ICallBackFeedAdapt
     private void initListPost(List<StandardPost> postList) {
         AdapterFeed adapterFeed = new AdapterFeed(postList, getContext(), this);
         recyclerViewPosts.setAdapter(adapterFeed);
-    }
-    private void loadAllComments(StandardPost post) {
-        RepositoryApp.getInstance(getContext()).getAllCommentsToPost(post.getKey()).observe(getViewLifecycleOwner(), new Observer<List<Comment>>() {
-            @Override
-            public void onChanged(List<Comment> commentList) {
-                loadRecyclerList(commentList);
-            }
-        });
     }
 
     private void loadRecyclerList(List<Comment> commentList) {

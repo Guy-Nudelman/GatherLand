@@ -18,12 +18,14 @@ import com.gather.land.models.GameRequestsPost;
 import com.gather.land.models.Post;
 import com.gather.land.models.StandardPost;
 import com.gather.land.models.User;
+import com.gather.land.utilities.ConverterImage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.util.List;
 
 public class RepositoryApp {
@@ -38,9 +40,11 @@ public class RepositoryApp {
     private final ChildEventListener mCallbackNewPostFeed = new ChildEventListener() {
         @Override
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
             StandardPost post = dataSnapshot.getValue(StandardPost.class);
-            databaseCore.insertNewStandardPost(post);
+            if (!databaseCore.isPostExist(post.getKey())){
+                databaseCore.insertNewStandardPost(post);
+            }
+
         }
 
         @Override
@@ -58,7 +62,7 @@ public class RepositoryApp {
                 public void run() {
                     onRefreshList();
                 }
-            },1000);
+            }, 1000);
         }
 
         @Override
@@ -75,7 +79,8 @@ public class RepositoryApp {
         @Override
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
             Comment comment = dataSnapshot.getValue(Comment.class);
-            databaseCore.insertNewComments(comment);
+            if (!databaseCore.isCommentExist(comment.getKey()))
+                databaseCore.insertNewComments(comment);
         }
 
         @Override
@@ -104,7 +109,6 @@ public class RepositoryApp {
     };
 
 
-
     public static RepositoryApp getInstance(Context context) {
         if (instance == null)
             instance = new RepositoryApp(context);
@@ -121,8 +125,7 @@ public class RepositoryApp {
     }
 
 
-
-    private MutableLiveData<Boolean> liveDataRefresh=new MutableLiveData<>();
+    private MutableLiveData<Boolean> liveDataRefresh = new MutableLiveData<>();
 
     public MutableLiveData<Boolean> getLiveDataRefresh() {
         return liveDataRefresh;
@@ -231,5 +234,14 @@ public class RepositoryApp {
     public void deleteAllCommentsPost(StandardPost post) {
         databaseCore.deletePostComments(post);
         networkCore.deletePostComments(post);
+    }
+
+    public void updatePostWithImage(StandardPost post) {
+        databaseCore.insertNewStandardPost(post);
+    }
+
+    public void storeProfileImageToComment(File file, Comment comment) {
+        comment.setImageProfileRAW(ConverterImage.getBytsFromFile(file));
+        databaseCore.insertNewComments(comment);
     }
 }

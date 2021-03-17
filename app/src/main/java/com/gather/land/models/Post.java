@@ -1,7 +1,10 @@
 package com.gather.land.models;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;
+
+import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
 
@@ -16,11 +19,37 @@ public abstract class Post implements Serializable {
     private String title;
     private String userName;
 
-//    @Col
-//    private byte[] imageRAW;
+
+    @Exclude
+    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
+    private byte[] imagePostRAW;
+
+    @Exclude
+    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
+    private byte[] imageProfileRAW;
+
+    @Exclude
+    public byte[] getImageProfileRAW() {
+        return imageProfileRAW;
+    }
+
+    @Exclude
+    public void setImageProfileRAW(byte[] imageProfileRAW) {
+        this.imageProfileRAW = imageProfileRAW;
+    }
 
     public String getUserName() {
         return userName;
+    }
+
+    @Exclude
+    public byte[] getImagePostRAW() {
+        return imagePostRAW;
+    }
+
+    @Exclude
+    public void setImagePostRAW(byte[] imagePostRAW) {
+        this.imagePostRAW = imagePostRAW;
     }
 
     public void setUserName(String userName) {
