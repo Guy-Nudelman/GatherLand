@@ -100,6 +100,14 @@ public class ProfileFragment extends BaseFragment  implements ICallBackFeedAdapt
         AdapterFeed adapterFeed = new AdapterFeed(postList, getContext(), this);
         recyclerViewPosts.setAdapter(adapterFeed);
     }
+    private void loadAllComments(StandardPost post) {
+        RepositoryApp.getInstance(getContext()).getAllCommentsToPost(post.getKey()).observe(getViewLifecycleOwner(), new Observer<List<Comment>>() {
+            @Override
+            public void onChanged(List<Comment> commentList) {
+                loadRecyclerList(commentList);
+            }
+        });
+    }
 
     private void loadRecyclerList(List<Comment> commentList) {
         CommentsAdapter commentsAdapter = new CommentsAdapter(commentList, getContext(), new ICallBackCommentAdapter() {
