@@ -28,11 +28,16 @@ import java.io.File;
 import java.util.List;
 
 public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.AdapterFeedViewHolder> {
-    private Context context;
-    private List<StandardPost> standardPosts;
-    private ICallBackFeedAdapter callback;
-    private RepositoryApp repositoryApp;
+    private final Context context;
+    private final List<StandardPost> standardPosts;
+    private final ICallBackFeedAdapter callback;
+    private final RepositoryApp repositoryApp;
     private String myEmail;
+
+
+    public List<StandardPost> getStandardPosts() {
+        return standardPosts;
+    }
 
     public AdapterFeed(List<StandardPost> standardPosts, Context context, ICallBackFeedAdapter callback) {
         this.standardPosts = standardPosts;
@@ -62,6 +67,11 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.AdapterFeedVie
         holder.llContainerMyPost.setVisibility(post.getUserKey().equals(myEmail) ? View.GONE : View.GONE);
 
 
+//        if (position == standardPosts.size() - 1) {
+//            if (callback != null)
+//                callback.onRefresh(standardPosts.get(standardPosts.size()-1));
+//        }
+
 
         if (post.getImageProfileRAW() != null) {
             Bitmap bitmap = ConverterImage.getBitmapImage(post.getImageProfileRAW());
@@ -88,7 +98,7 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.AdapterFeedVie
                     if (file != null) {
                         Glide.with(context).load(file).into(holder.imageViewPost);
 
-                    }else {
+                    } else {
                         Glide.with(context).clear(holder.imageViewPost);
                     }
                 }

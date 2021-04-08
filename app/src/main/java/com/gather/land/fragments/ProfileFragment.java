@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.gather.land.R;
-import com.gather.land.activities.MainActivity;
 import com.gather.land.activities.SplashActivity;
 import com.gather.land.adapters.AdapterFeed;
 import com.gather.land.adapters.CommentsAdapter;
@@ -28,6 +28,10 @@ import com.gather.land.models.Comment;
 import com.gather.land.models.StandardPost;
 import com.gather.land.reposetories.RepositoryApp;
 import com.gather.land.view_models.ProfileViewModel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.List;
 
 public class ProfileFragment extends BaseFragment  implements ICallBackFeedAdapter {
@@ -54,7 +58,6 @@ public class ProfileFragment extends BaseFragment  implements ICallBackFeedAdapt
         btnLogOut = view.findViewById(R.id.btnLogOut);
         txtUserName=view.findViewById(R.id.txtProfileName);
         txtUserName.setText(mViewModel.getUserName());
-//        txtUserName.setVisibility(View.GONE);
         recyclerViewPosts = view.findViewById(R.id.recyclerViewProfilePosts);
         recyclerViewComments = view.findViewById(R.id.recyclerViewProfileComments);
         recyclerViewPosts.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
@@ -85,16 +88,12 @@ public class ProfileFragment extends BaseFragment  implements ICallBackFeedAdapt
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-
                         mListener.showActivity(SplashActivity.class);
                     }
                 },2000);
 
             }
         });
-
-
-
     }
     private void initListPost(List<StandardPost> postList) {
         AdapterFeed adapterFeed = new AdapterFeed(postList, getContext(), this);
@@ -133,8 +132,7 @@ public class ProfileFragment extends BaseFragment  implements ICallBackFeedAdapt
     }
 
     @Override
-    public void onRefresh() {
-        RepositoryApp.getInstance(getContext()).getAllPostFeedLiveData();
+    public void onRefresh(StandardPost post) {
     }
 
     private void showNewCommentDialog(Comment comment) {

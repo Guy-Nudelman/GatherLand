@@ -1,13 +1,10 @@
 package com.gather.land.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,8 +21,6 @@ import com.gather.land.interfaces.ICallBackFeedAdapter;
 import com.gather.land.models.StandardPost;
 import com.gather.land.reposetories.RepositoryApp;
 import com.gather.land.view_models.HomeViewModel;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -76,16 +71,15 @@ public class HomeFragment extends BaseFragment implements ICallBackFeedAdapter {
     }
 
     private void loadRecyclerList() {
-        repositoryApp.getAllPostFeedLiveData().observe(getViewLifecycleOwner(), new Observer<List<StandardPost>>() {
-            @Override
-            public void onChanged(List<StandardPost> postList) {
-                initListPost(postList);
-
-
-            }
-
-        });
+        repositoryApp.getAllPostFeedLiveData().observe(getViewLifecycleOwner(), listObserver);
     }
+
+   private final Observer<List<StandardPost>> listObserver = new Observer<List<StandardPost>>() {
+        @Override
+        public void onChanged(List<StandardPost> postList) {
+            initListPost(postList);
+        }
+    };
 
     private void initListPost(List<StandardPost> postList) {
         AdapterFeed adapterFeed = new AdapterFeed(postList, getContext(), this);
@@ -100,7 +94,7 @@ public class HomeFragment extends BaseFragment implements ICallBackFeedAdapter {
     }
 
     @Override
-    public void onRefresh() {
-        repositoryApp.getAllPostFeedLiveData();
+    public void onRefresh(StandardPost post) {
+//        repositoryApp.getAllPostFeedLiveData();
     }
 }

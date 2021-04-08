@@ -18,6 +18,7 @@ import com.gather.land.reposetories.RepositoryApp;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -66,6 +67,8 @@ public class RegisterViewModel extends AndroidViewModel {
     public void createNewUser(String email, String password) {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
+
+
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {

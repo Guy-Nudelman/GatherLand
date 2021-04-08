@@ -41,10 +41,9 @@ public class RepositoryApp {
         @Override
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
             StandardPost post = dataSnapshot.getValue(StandardPost.class);
-            if (!databaseCore.isPostExist(post.getKey())){
+            if (!databaseCore.isPostExist(post.getKey())) {
                 databaseCore.insertNewStandardPost(post);
             }
-
         }
 
         @Override
@@ -54,7 +53,6 @@ public class RepositoryApp {
 
         @Override
         public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            Log.d("WOOOWW", "remove");
             StandardPost post = dataSnapshot.getValue(StandardPost.class);
             databaseCore.deletePost(post);
             new Handler().postDelayed(new Runnable() {
@@ -75,7 +73,7 @@ public class RepositoryApp {
 
         }
     };
-    private ChildEventListener mListenerCommentsToPost = new ChildEventListener() {
+    private final ChildEventListener mListenerCommentsToPost = new ChildEventListener() {
         @Override
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
             Comment comment = dataSnapshot.getValue(Comment.class);
@@ -120,12 +118,35 @@ public class RepositoryApp {
         networkCore = new NetworkCore();
         prefHelper = SharedPrefHelper.getInstance(context);
         myUser = prefHelper.getUser();
-        if (myUser != null)
+        if (myUser != null) {
             listenerFeed();
+            updatePostRemoved();
+        }
+    }
+
+    private void updatePostRemoved() {
+        networkCore.checkAllPostDeleted(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        StandardPost post = snapshot.getValue(StandardPost.class);
+                        databaseCore.deletePost(post);
+                    }
+                    onRefreshList();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 
-    private MutableLiveData<Boolean> liveDataRefresh = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> liveDataRefresh = new MutableLiveData<>();
 
     public MutableLiveData<Boolean> getLiveDataRefresh() {
         return liveDataRefresh;

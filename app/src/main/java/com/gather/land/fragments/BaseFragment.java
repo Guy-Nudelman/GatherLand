@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment;
 
 import com.gather.land.interfaces.CallBackFragment;
 
-public class BaseFragment extends Fragment {
+public  abstract class BaseFragment extends Fragment {
     protected CallBackFragment mListener;
 
     @Override

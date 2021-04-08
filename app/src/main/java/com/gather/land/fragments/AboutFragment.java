@@ -28,7 +28,6 @@ public class AboutFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //txtTitle=view.findViewById(R.id.txtAboutTitle);
         emailBtn=view.findViewById(R.id.btnAboutEmail);
         emailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
