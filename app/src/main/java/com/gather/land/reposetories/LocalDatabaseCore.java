@@ -38,7 +38,7 @@ public class LocalDatabaseCore {
         standardPostDao.insertNewStandardPost(standardPosts);
     }
 
-    public LiveData<List<StandardPost>> getAllPostFeedLiveData() {
+    public LiveData<List<StandardPost>> getAllPostFeedLiveData( ) {
         return standardPostDao.getAllPostsList();
     }
     public LiveData<List<StandardPost>> getAllMyPosts(String userEmail) {

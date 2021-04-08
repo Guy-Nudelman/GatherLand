@@ -5,5 +5,6 @@ public enum FirebaseTable {
     FEED,
     COMMENT,
     LIKES,
-    GAME_REQUEST
+    GAME_REQUEST,
+    POST_DELETED
 }

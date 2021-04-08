@@ -21,10 +21,9 @@ public interface IStandardPostDao {
     LiveData<List<StandardPost>> getAllPostsByGameTag(String gameTag);
 
     @Query("select * from standardPost order by timeStampCreated desc")
-    LiveData<List<StandardPost>> getAllPostsList();
+    LiveData<List<StandardPost>> getAllPostsList( );
 
 
-    //insert image to room with blob// upgrade new database version
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertNewStandardPost(List<StandardPost> postList);

@@ -28,11 +28,11 @@ import java.io.File;
 import java.util.List;
 
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.AdapterFeedViewHolder> {
-    private Context context;
-    private List<Comment> comments;
-    private RepositoryApp repositoryApp;
+    private final Context context;
+    private final List<Comment> comments;
+    private final RepositoryApp repositoryApp;
     private String myEmail;
-    private ICallBackCommentAdapter callBackCommentAdapter;
+    private final ICallBackCommentAdapter callBackCommentAdapter;
 
     public CommentsAdapter(List<Comment> commentList, Context context, ICallBackCommentAdapter callBackCommentAdapter) {
         this.comments = commentList;

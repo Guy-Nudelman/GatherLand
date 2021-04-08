@@ -60,13 +60,7 @@ public abstract class Post implements Serializable {
 
     }
 
-//    public Post(String gameTag, String userKey, long timeStampCreated, String title,String userName) {
-//        this.gameTag = gameTag;
-//        this.userName = userName;
-//        this.userKey = userKey;
-//        this.timeStampCreated = timeStampCreated;
-//        this.title = title;
-//    }
+
 
     public Post(String gameTag, long timeStampCreated, String title) {
         this.gameTag = gameTag;

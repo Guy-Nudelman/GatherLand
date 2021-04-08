@@ -146,9 +146,14 @@ public class NetworkCore {
 
     public void deletePost(StandardPost post) {
         mRef.child(FirebaseTable.FEED.name()).child(post.getKey()).removeValue();
+        mRef.child(FirebaseTable.POST_DELETED.name()).child(post.getKey()).setValue(post);
     }
 
     public void deletePostComments(StandardPost post) {
         mRef.child(FirebaseTable.COMMENT.name()).child(post.getKey()).removeValue();
+    }
+
+    public void checkAllPostDeleted(ValueEventListener valueEventListener) {
+        mRef.child(FirebaseTable.POST_DELETED.name()).addListenerForSingleValueEvent(valueEventListener);
     }
 }
